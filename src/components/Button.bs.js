@@ -17,7 +17,7 @@ var button = Css.style(/* :: */[
         /* :: */[
           Css.color(Css.hex("ffffff")),
           /* :: */[
-            Css.fontSize(Css.px(14)),
+            Css.fontSize(Css.px(16)),
             /* :: */[
               Css.padding2(Css.px(10), Css.px(16)),
               /* [] */0

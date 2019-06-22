@@ -8,7 +8,7 @@ module Styles = {
     border-radius: 2px;
     border-style: none;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px 16px;
   |}
       ],
