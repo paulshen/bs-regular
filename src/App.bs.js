@@ -3,18 +3,34 @@
 
 var Css = require("bs-css/src/Css.js");
 var React = require("react");
+var Button$ReactHooksTemplate = require("./components/Button.bs.js");
 
 var root = Css.style(/* :: */[
       Css.fontFamily("Inter"),
       /* [] */0
     ]);
 
-var Styles = /* module */[/* root */root];
+var button = Css.style(/* :: */[
+      Css.marginRight(Css.px(8)),
+      /* [] */0
+    ]);
+
+var Styles = /* module */[
+  /* root */root,
+  /* button */button
+];
 
 function App(Props) {
   return React.createElement("div", {
               className: root
-            }, "Hello");
+            }, React.createElement("div", undefined, "Hello"), React.createElement("div", undefined, React.createElement(Button$ReactHooksTemplate.make, {
+                      children: "primary",
+                      className: button
+                    }), React.createElement(Button$ReactHooksTemplate.make, {
+                      type_: /* Secondary */1,
+                      children: "secondary",
+                      className: button
+                    })));
 }
 
 var make = App;
