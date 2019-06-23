@@ -2,9 +2,12 @@
 'use strict';
 
 var Css = require("bs-css/src/Css.js");
+var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
+var Grid$ReactHooksTemplate = require("./components/Grid.bs.js");
 var Text$ReactHooksTemplate = require("./components/Text.bs.js");
 var Button$ReactHooksTemplate = require("./components/Button.bs.js");
+var Colors$ReactHooksTemplate = require("./components/theme/Colors.bs.js");
 var Divider$ReactHooksTemplate = require("./components/Divider.bs.js");
 
 var root = Css.style(/* :: */[
@@ -28,11 +31,34 @@ var section = Css.style(/* :: */[
       ]
     ]);
 
+var gridRow = Css.style(/* :: */[
+      Css.marginBottom(Css.px(16)),
+      /* [] */0
+    ]);
+
+var gridCell = Css.style(/* :: */[
+      Css.backgroundColor(/* `hex */[
+            5194459,
+            Colors$ReactHooksTemplate.primary475
+          ]),
+      /* [] */0
+    ]);
+
 var Styles = /* module */[
   /* root */root,
   /* button */button,
-  /* section */section
+  /* section */section,
+  /* gridRow */gridRow,
+  /* gridCell */gridCell
 ];
+
+function repeatElement(num, render) {
+  var rv = /* array */[];
+  for(var i = 0 ,i_finish = num - 1 | 0; i <= i_finish; ++i){
+    rv.push(Curry._1(render, i));
+  }
+  return rv;
+}
 
 function App(Props) {
   return React.createElement("div", {
@@ -54,11 +80,62 @@ function App(Props) {
                       children: "Header"
                     }), React.createElement(Text$ReactHooksTemplate.body, {
                       children: "Such a riot of sea and wind strews the whole extent of beach with whatever has been lost or thrown overboard, or torn out of sunken ships. Many a man has made a good week's work in a single day by what he has found while walking along the Beach when the surf was down."
+                    })), React.createElement("div", {
+                  className: section
+                }, React.createElement(Text$ReactHooksTemplate.header, {
+                      children: "Grid"
+                    }), React.createElement(Grid$ReactHooksTemplate.row, {
+                      className: gridRow,
+                      children: null
+                    }, React.createElement(Grid$ReactHooksTemplate.cell, {
+                          span: 6,
+                          children: React.createElement("div", {
+                                className: gridCell
+                              }, "6")
+                        }), React.createElement(Grid$ReactHooksTemplate.cell, {
+                          span: 6,
+                          children: React.createElement("div", {
+                                className: gridCell
+                              }, "6")
+                        })), React.createElement(Grid$ReactHooksTemplate.row, {
+                      className: gridRow,
+                      children: repeatElement(3, (function (i) {
+                              return React.createElement(Grid$ReactHooksTemplate.cell, {
+                                          span: 4,
+                                          children: React.createElement("div", {
+                                                className: gridCell
+                                              }, "4"),
+                                          key: String(i)
+                                        });
+                            }))
+                    }), React.createElement(Grid$ReactHooksTemplate.row, {
+                      className: gridRow,
+                      children: repeatElement(4, (function (i) {
+                              return React.createElement(Grid$ReactHooksTemplate.cell, {
+                                          span: 3,
+                                          children: React.createElement("div", {
+                                                className: gridCell
+                                              }, "3"),
+                                          key: String(i)
+                                        });
+                            }))
+                    }), React.createElement(Grid$ReactHooksTemplate.row, {
+                      className: gridRow,
+                      children: repeatElement(6, (function (i) {
+                              return React.createElement(Grid$ReactHooksTemplate.cell, {
+                                          span: 2,
+                                          children: React.createElement("div", {
+                                                className: gridCell
+                                              }, "2"),
+                                          key: String(i)
+                                        });
+                            }))
                     })));
 }
 
 var make = App;
 
 exports.Styles = Styles;
+exports.repeatElement = repeatElement;
 exports.make = make;
 /* root Not a pure module */

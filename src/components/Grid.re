@@ -1,0 +1,76 @@
+module Styles = {
+  open Css;
+  let span1Percent = 100. /. 12.;
+  let row = style([display(`flex), flexWrap(`wrap)]);
+  let cell = style([boxSizing(`borderBox)]);
+};
+
+type gridContext = {
+  span: int,
+  gutter: int,
+};
+let context = React.createContext({span: 12, gutter: 8});
+module ContextProvider = {
+  let makeProps = (~value, ~children, ()) => {
+    "value": value,
+    "children": children,
+  };
+  let make = React.Context.provider(context);
+};
+
+[@react.component]
+let row = (~className=?, ~span=?, ~children) => {
+  let {gutter} = React.useContext(context);
+  let style =
+    switch (gutter) {
+    | 0 => None
+    | gutter =>
+      Some(
+        ReactDOMRe.Style.make(
+          ~marginLeft=string_of_int(- gutter) ++ "px",
+          (),
+        ),
+      )
+    };
+  let body =
+    <div className={Cn.make([Styles.row, Cn.unpack(className)])} ?style>
+      children
+    </div>;
+  switch (span) {
+  | Some(span) =>
+    <ContextProvider value={span, gutter}> body </ContextProvider>
+  | None => body
+  };
+};
+
+[@react.component]
+let cell = (~span, ~className=?, ~children) => {
+  let {span: contextSpan, gutter} = React.useContext(context);
+  let style =
+    ReactDOMRe.Style.make(
+      ~width=
+        Js.Float.toString(
+          float_of_int(span) /. float_of_int(contextSpan) *. 100.,
+        )
+        ++ "%",
+      (),
+    );
+  let style =
+    if (gutter != 0) {
+      ReactDOMRe.Style.combine(
+        style,
+        ReactDOMRe.Style.make(
+          ~paddingLeft=string_of_int(gutter) ++ "px",
+          ~paddingRight=string_of_int(gutter) ++ "px",
+          (),
+        ),
+      );
+    } else {
+      style;
+    };
+  <ContextProvider value={span, gutter}>
+    <div className={Cn.make([Styles.cell, Cn.unpack(className)])} style>
+      children
+    </div>
+  </ContextProvider>;
+};
