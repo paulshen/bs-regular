@@ -9,6 +9,8 @@ var Text$ReactHooksTemplate = require("./components/Text.bs.js");
 var Button$ReactHooksTemplate = require("./components/Button.bs.js");
 var Colors$ReactHooksTemplate = require("./components/theme/Colors.bs.js");
 var Divider$ReactHooksTemplate = require("./components/Divider.bs.js");
+var Spacing$ReactHooksTemplate = require("./components/theme/Spacing.bs.js");
+var TextInput$ReactHooksTemplate = require("./components/inputs/TextInput.bs.js");
 
 var root = Css.style(/* :: */[
       Css.fontFamily("Inter"),
@@ -130,7 +132,24 @@ function App(Props) {
                                           key: String(i)
                                         });
                             }))
-                    })));
+                    })), React.createElement("div", {
+                  className: section
+                }, React.createElement(Text$ReactHooksTemplate.header, {
+                      children: "Inputs"
+                    }), React.createElement(Grid$ReactHooksTemplate.row, {
+                      className: Spacing$ReactHooksTemplate.marginBottom16,
+                      children: null
+                    }, React.createElement(Grid$ReactHooksTemplate.cell, {
+                          span: 6,
+                          children: React.createElement(TextInput$ReactHooksTemplate.make, {
+                                placeholder: "First name"
+                              })
+                        }), React.createElement(Grid$ReactHooksTemplate.cell, {
+                          span: 6,
+                          children: React.createElement(TextInput$ReactHooksTemplate.make, {
+                                placeholder: "Last name"
+                              })
+                        }))));
 }
 
 var make = App;

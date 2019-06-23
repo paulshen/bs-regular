@@ -54,6 +54,7 @@ function Grid$row(Props) {
   var match = React.useContext(context);
   var gutter = match[/* gutter */1];
   var style = gutter !== 0 ? ({
+        marginRight: String(-gutter | 0) + "px",
         marginLeft: String(-gutter | 0) + "px"
       }) : undefined;
   var tmp = {

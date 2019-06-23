@@ -28,6 +28,7 @@ let row = (~className=?, ~span=?, ~children) => {
       Some(
         ReactDOMRe.Style.make(
           ~marginLeft=string_of_int(- gutter) ++ "px",
+          ~marginRight=string_of_int(- gutter) ++ "px",
           (),
         ),
       )

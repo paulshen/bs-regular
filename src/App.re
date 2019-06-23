@@ -84,5 +84,12 @@ let make = () => {
          )}
       </Grid.row>
     </div>
+    <div className=Styles.section>
+      <Text.header> {React.string("Inputs")} </Text.header>
+      <Grid.row className=Spacing.marginBottom16>
+        <Grid.cell span=6> <TextInput placeholder="First name" /> </Grid.cell>
+        <Grid.cell span=6> <TextInput placeholder="Last name" /> </Grid.cell>
+      </Grid.row>
+    </div>
   </div>;
 };
