@@ -6,6 +6,7 @@ var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Grid$ReactHooksTemplate = require("./components/Grid.bs.js");
 var Text$ReactHooksTemplate = require("./components/Text.bs.js");
+var Layer$ReactHooksTemplate = require("./components/layer/Layer.bs.js");
 var Button$ReactHooksTemplate = require("./components/Button.bs.js");
 var Colors$ReactHooksTemplate = require("./components/theme/Colors.bs.js");
 var Divider$ReactHooksTemplate = require("./components/Divider.bs.js");
@@ -63,93 +64,95 @@ function repeatElement(num, render) {
 }
 
 function App(Props) {
-  return React.createElement("div", {
-              className: root
+  return React.createElement(Layer$ReactHooksTemplate.provider, {
+              children: null
             }, React.createElement("div", {
-                  className: section
-                }, React.createElement(Text$ReactHooksTemplate.header, {
-                      children: "Buttons"
-                    }), React.createElement(Button$ReactHooksTemplate.make, {
-                      children: "primary",
-                      className: button
-                    }), React.createElement(Button$ReactHooksTemplate.make, {
-                      type_: /* Secondary */1,
-                      children: "secondary",
-                      className: button
-                    })), React.createElement("div", {
-                  className: section
-                }, React.createElement(Divider$ReactHooksTemplate.make, { }), React.createElement(Text$ReactHooksTemplate.smallHeader, {
-                      children: "Header"
-                    }), React.createElement(Text$ReactHooksTemplate.body, {
-                      children: "Such a riot of sea and wind strews the whole extent of beach with whatever has been lost or thrown overboard, or torn out of sunken ships. Many a man has made a good week's work in a single day by what he has found while walking along the Beach when the surf was down."
-                    })), React.createElement("div", {
-                  className: section
-                }, React.createElement(Text$ReactHooksTemplate.header, {
-                      children: "Grid"
-                    }), React.createElement(Grid$ReactHooksTemplate.row, {
-                      className: gridRow,
-                      children: null
-                    }, React.createElement(Grid$ReactHooksTemplate.cell, {
-                          span: 6,
-                          children: React.createElement("div", {
-                                className: gridCell
-                              }, "6")
-                        }), React.createElement(Grid$ReactHooksTemplate.cell, {
-                          span: 6,
-                          children: React.createElement("div", {
-                                className: gridCell
-                              }, "6")
-                        })), React.createElement(Grid$ReactHooksTemplate.row, {
-                      className: gridRow,
-                      children: repeatElement(3, (function (i) {
-                              return React.createElement(Grid$ReactHooksTemplate.cell, {
-                                          span: 4,
-                                          children: React.createElement("div", {
-                                                className: gridCell
-                                              }, "4"),
-                                          key: String(i)
-                                        });
-                            }))
-                    }), React.createElement(Grid$ReactHooksTemplate.row, {
-                      className: gridRow,
-                      children: repeatElement(4, (function (i) {
-                              return React.createElement(Grid$ReactHooksTemplate.cell, {
-                                          span: 3,
-                                          children: React.createElement("div", {
-                                                className: gridCell
-                                              }, "3"),
-                                          key: String(i)
-                                        });
-                            }))
-                    }), React.createElement(Grid$ReactHooksTemplate.row, {
-                      className: gridRow,
-                      children: repeatElement(6, (function (i) {
-                              return React.createElement(Grid$ReactHooksTemplate.cell, {
-                                          span: 2,
-                                          children: React.createElement("div", {
-                                                className: gridCell
-                                              }, "2"),
-                                          key: String(i)
-                                        });
-                            }))
-                    })), React.createElement("div", {
-                  className: section
-                }, React.createElement(Text$ReactHooksTemplate.header, {
-                      children: "Inputs"
-                    }), React.createElement(Grid$ReactHooksTemplate.row, {
-                      className: Spacing$ReactHooksTemplate.marginBottom16,
-                      children: null
-                    }, React.createElement(Grid$ReactHooksTemplate.cell, {
-                          span: 6,
-                          children: React.createElement(TextInput$ReactHooksTemplate.make, {
-                                placeholder: "First name"
-                              })
-                        }), React.createElement(Grid$ReactHooksTemplate.cell, {
-                          span: 6,
-                          children: React.createElement(TextInput$ReactHooksTemplate.make, {
-                                placeholder: "Last name"
-                              })
-                        }))));
+                  className: root
+                }, React.createElement("div", {
+                      className: section
+                    }, React.createElement(Text$ReactHooksTemplate.header, {
+                          children: "Buttons"
+                        }), React.createElement(Button$ReactHooksTemplate.make, {
+                          children: "primary",
+                          className: button
+                        }), React.createElement(Button$ReactHooksTemplate.make, {
+                          type_: /* Secondary */1,
+                          children: "secondary",
+                          className: button
+                        })), React.createElement("div", {
+                      className: section
+                    }, React.createElement(Divider$ReactHooksTemplate.make, { }), React.createElement(Text$ReactHooksTemplate.smallHeader, {
+                          children: "Header"
+                        }), React.createElement(Text$ReactHooksTemplate.body, {
+                          children: "Such a riot of sea and wind strews the whole extent of beach with whatever has been lost or thrown overboard, or torn out of sunken ships. Many a man has made a good week's work in a single day by what he has found while walking along the Beach when the surf was down."
+                        })), React.createElement("div", {
+                      className: section
+                    }, React.createElement(Text$ReactHooksTemplate.header, {
+                          children: "Grid"
+                        }), React.createElement(Grid$ReactHooksTemplate.row, {
+                          className: gridRow,
+                          children: null
+                        }, React.createElement(Grid$ReactHooksTemplate.cell, {
+                              span: 6,
+                              children: React.createElement("div", {
+                                    className: gridCell
+                                  }, "6")
+                            }), React.createElement(Grid$ReactHooksTemplate.cell, {
+                              span: 6,
+                              children: React.createElement("div", {
+                                    className: gridCell
+                                  }, "6")
+                            })), React.createElement(Grid$ReactHooksTemplate.row, {
+                          className: gridRow,
+                          children: repeatElement(3, (function (i) {
+                                  return React.createElement(Grid$ReactHooksTemplate.cell, {
+                                              span: 4,
+                                              children: React.createElement("div", {
+                                                    className: gridCell
+                                                  }, "4"),
+                                              key: String(i)
+                                            });
+                                }))
+                        }), React.createElement(Grid$ReactHooksTemplate.row, {
+                          className: gridRow,
+                          children: repeatElement(4, (function (i) {
+                                  return React.createElement(Grid$ReactHooksTemplate.cell, {
+                                              span: 3,
+                                              children: React.createElement("div", {
+                                                    className: gridCell
+                                                  }, "3"),
+                                              key: String(i)
+                                            });
+                                }))
+                        }), React.createElement(Grid$ReactHooksTemplate.row, {
+                          className: gridRow,
+                          children: repeatElement(6, (function (i) {
+                                  return React.createElement(Grid$ReactHooksTemplate.cell, {
+                                              span: 2,
+                                              children: React.createElement("div", {
+                                                    className: gridCell
+                                                  }, "2"),
+                                              key: String(i)
+                                            });
+                                }))
+                        })), React.createElement("div", {
+                      className: section
+                    }, React.createElement(Text$ReactHooksTemplate.header, {
+                          children: "Inputs"
+                        }), React.createElement(Grid$ReactHooksTemplate.row, {
+                          className: Spacing$ReactHooksTemplate.marginBottom16,
+                          children: null
+                        }, React.createElement(Grid$ReactHooksTemplate.cell, {
+                              span: 6,
+                              children: React.createElement(TextInput$ReactHooksTemplate.make, {
+                                    placeholder: "First name"
+                                  })
+                            }), React.createElement(Grid$ReactHooksTemplate.cell, {
+                              span: 6,
+                              children: React.createElement(TextInput$ReactHooksTemplate.make, {
+                                    placeholder: "Last name"
+                                  })
+                            })))), React.createElement(Layer$ReactHooksTemplate.container, { }));
 }
 
 var make = App;
