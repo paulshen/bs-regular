@@ -1,6 +1,5 @@
 module Styles = {
   open Css;
-  let bgc = `hex("404040");
   let button =
     style(
       [%style
@@ -13,12 +12,8 @@ module Styles = {
   |}
       ],
     );
-  let primary = style([%style {|
-    background-color: bgc;
-    |}]);
-  let secondary = style([%style {|
-    background-color: #2A77DF;
-    |}]);
+  let primary = style([backgroundColor(`hex(Colors.primary200))]);
+  let secondary = style([backgroundColor(`hex("2A77DF"))]);
 };
 
 type buttonType =
@@ -26,7 +21,7 @@ type buttonType =
   | Secondary;
 
 [@react.component]
-let make = (~type_=Primary, ~children, ~className=?) => {
+let make = (~type_=Primary, ~children, ~className=?, ~onClick=?) => {
   <button
     className={Cn.make([
       Styles.button,
@@ -35,7 +30,8 @@ let make = (~type_=Primary, ~children, ~className=?) => {
       | Secondary => Styles.secondary
       },
       Cn.unpack(className),
-    ])}>
+    ])}
+    ?onClick>
     children
   </button>;
 };

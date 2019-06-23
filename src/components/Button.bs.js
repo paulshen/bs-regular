@@ -4,11 +4,8 @@
 var Cn = require("re-classnames/src/Cn.bs.js");
 var Css = require("bs-css/src/Css.js");
 var React = require("react");
-
-var bgc = /* `hex */[
-  5194459,
-  "404040"
-];
+var Caml_option = require("bs-platform/lib/js/caml_option.js");
+var Colors$ReactHooksTemplate = require("./theme/Colors.bs.js");
 
 var button = Css.style(/* :: */[
       Css.borderRadius(Css.px(2)),
@@ -28,17 +25,22 @@ var button = Css.style(/* :: */[
     ]);
 
 var primary = Css.style(/* :: */[
-      Css.backgroundColor(bgc),
+      Css.backgroundColor(/* `hex */[
+            5194459,
+            Colors$ReactHooksTemplate.primary200
+          ]),
       /* [] */0
     ]);
 
 var secondary = Css.style(/* :: */[
-      Css.backgroundColor(Css.hex("2A77DF")),
+      Css.backgroundColor(/* `hex */[
+            5194459,
+            "2A77DF"
+          ]),
       /* [] */0
     ]);
 
 var Styles = /* module */[
-  /* bgc */bgc,
   /* button */button,
   /* primary */primary,
   /* secondary */secondary
@@ -49,18 +51,23 @@ function Button(Props) {
   var type_ = match !== undefined ? match : /* Primary */0;
   var children = Props.children;
   var className = Props.className;
-  return React.createElement("button", {
-              className: Cn.make(/* :: */[
-                    button,
-                    /* :: */[
-                      type_ ? secondary : primary,
-                      /* :: */[
-                        Cn.unpack(className),
-                        /* [] */0
-                      ]
-                    ]
-                  ])
-            }, children);
+  var onClick = Props.onClick;
+  var tmp = {
+    className: Cn.make(/* :: */[
+          button,
+          /* :: */[
+            type_ ? secondary : primary,
+            /* :: */[
+              Cn.unpack(className),
+              /* [] */0
+            ]
+          ]
+        ])
+  };
+  if (onClick !== undefined) {
+    tmp.onClick = Caml_option.valFromOption(onClick);
+  }
+  return React.createElement("button", tmp, children);
 }
 
 var make = Button;
