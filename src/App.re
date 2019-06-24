@@ -37,29 +37,33 @@ module ContextLayerExample = {
     });
     <>
       <div ref={ReactDOMRe.Ref.domRef(divRef)}>
-        {React.string("Hello")}
+        {React.string("Context")}
       </div>
       {showLayer
          ? <>
-             <ContextLayer position=ContextLayer.Top context=divRef>
-               <div className=Styles.contextLayer>
-                 {React.string("ContextLayer")}
-               </div>
+             <ContextLayer position=ContextLayer.Top contextRef=divRef>
+               {(~position as _) =>
+                  <div className=Styles.contextLayer>
+                    {React.string("ContextLayer")}
+                  </div>}
              </ContextLayer>
-             <ContextLayer position=ContextLayer.Bottom context=divRef>
-               <div className=Styles.contextLayer>
-                 {React.string("ContextLayer")}
-               </div>
+             <ContextLayer position=ContextLayer.Bottom contextRef=divRef>
+               {(~position as _) =>
+                  <div className=Styles.contextLayer>
+                    {React.string("ContextLayer")}
+                  </div>}
              </ContextLayer>
-             <ContextLayer position=ContextLayer.Left context=divRef>
-               <div className=Styles.contextLayer>
-                 {React.string("ContextLayer")}
-               </div>
+             <ContextLayer position=ContextLayer.Left contextRef=divRef>
+               {(~position as _) =>
+                  <div className=Styles.contextLayer>
+                    {React.string("ContextLayer")}
+                  </div>}
              </ContextLayer>
-             <ContextLayer position=ContextLayer.Right context=divRef>
-               <div className=Styles.contextLayer>
-                 {React.string("ContextLayer")}
-               </div>
+             <ContextLayer position=ContextLayer.Right contextRef=divRef>
+               {(~position as _) =>
+                  <div className=Styles.contextLayer>
+                    {React.string("ContextLayer")}
+                  </div>}
              </ContextLayer>
            </>
          : React.null}
@@ -134,7 +138,19 @@ let make = () => {
           <Grid.cell span=6> <TextInput placeholder="Last name" /> </Grid.cell>
         </Grid.row>
       </div>
-      <div className=Styles.section> <ContextLayerExample /> </div>
+      <div className=Styles.section>
+        <Text.header> {React.string("ContextLayer")} </Text.header>
+        <ContextLayerExample />
+      </div>
+      <div className=Styles.section>
+        <Text.header> {React.string("Tooltip")} </Text.header>
+        <Tooltip text="tooltip">
+          {(~contextRef, ~onMouseEnter, ~onMouseLeave) =>
+             <Button ref=contextRef onMouseEnter onMouseLeave>
+               {React.string("Hover me")}
+             </Button>}
+        </Tooltip>
+      </div>
     </div>
     <Layer.container />
   </Layer.provider>;

@@ -4,6 +4,7 @@
 var Cn = require("re-classnames/src/Cn.bs.js");
 var Css = require("bs-css/src/Css.js");
 var React = require("react");
+var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var Colors$ReactHooksTemplate = require("./theme/Colors.bs.js");
 
@@ -46,31 +47,43 @@ var Styles = /* module */[
   /* secondary */secondary
 ];
 
-function Button(Props) {
-  var match = Props.type_;
-  var type_ = match !== undefined ? match : /* Primary */0;
-  var children = Props.children;
-  var className = Props.className;
-  var onClick = Props.onClick;
-  var tmp = {
-    className: Cn.make(/* :: */[
-          button,
-          /* :: */[
-            type_ ? secondary : primary,
-            /* :: */[
-              Cn.unpack(className),
-              /* [] */0
-            ]
-          ]
-        ])
-  };
-  if (onClick !== undefined) {
-    tmp.onClick = Caml_option.valFromOption(onClick);
-  }
-  return React.createElement("button", tmp, children);
-}
-
-var make = Button;
+var make = React.forwardRef((function (Props, forwardedRef) {
+        var match = Props.type_;
+        var type_ = match !== undefined ? match : /* Primary */0;
+        var children = Props.children;
+        var className = Props.className;
+        var onClick = Props.onClick;
+        var onMouseEnter = Props.onMouseEnter;
+        var onMouseLeave = Props.onMouseLeave;
+        var tmp = {
+          className: Cn.make(/* :: */[
+                button,
+                /* :: */[
+                  type_ ? secondary : primary,
+                  /* :: */[
+                    Cn.unpack(className),
+                    /* [] */0
+                  ]
+                ]
+              ])
+        };
+        var tmp$1 = Belt_Option.map((forwardedRef == null) ? undefined : Caml_option.some(forwardedRef), (function (prim) {
+                return prim;
+              }));
+        if (tmp$1 !== undefined) {
+          tmp.ref = Caml_option.valFromOption(tmp$1);
+        }
+        if (onClick !== undefined) {
+          tmp.onClick = Caml_option.valFromOption(onClick);
+        }
+        if (onMouseEnter !== undefined) {
+          tmp.onMouseEnter = Caml_option.valFromOption(onMouseEnter);
+        }
+        if (onMouseLeave !== undefined) {
+          tmp.onMouseLeave = Caml_option.valFromOption(onMouseLeave);
+        }
+        return React.createElement("button", tmp, children);
+      }));
 
 exports.Styles = Styles;
 exports.make = make;

@@ -11,6 +11,7 @@ var Button$ReactHooksTemplate = require("./components/Button.bs.js");
 var Colors$ReactHooksTemplate = require("./components/theme/Colors.bs.js");
 var Divider$ReactHooksTemplate = require("./components/Divider.bs.js");
 var Spacing$ReactHooksTemplate = require("./components/theme/Spacing.bs.js");
+var Tooltip$ReactHooksTemplate = require("./components/Tooltip.bs.js");
 var TextInput$ReactHooksTemplate = require("./components/inputs/TextInput.bs.js");
 var ContextLayer$ReactHooksTemplate = require("./components/layer/ContextLayer.bs.js");
 
@@ -84,30 +85,38 @@ function App$ContextLayerExample(Props) {
         }), ([]));
   return React.createElement(React.Fragment, undefined, React.createElement("div", {
                   ref: divRef
-                }, "Hello"), match[0] ? React.createElement(React.Fragment, undefined, React.createElement(ContextLayer$ReactHooksTemplate.make, {
-                        context: divRef,
+                }, "Context"), match[0] ? React.createElement(React.Fragment, undefined, React.createElement(ContextLayer$ReactHooksTemplate.make, {
+                        contextRef: divRef,
                         position: /* Top */0,
-                        children: React.createElement("div", {
-                              className: contextLayer
-                            }, "ContextLayer")
+                        children: (function (param) {
+                            return React.createElement("div", {
+                                        className: contextLayer
+                                      }, "ContextLayer");
+                          })
                       }), React.createElement(ContextLayer$ReactHooksTemplate.make, {
-                        context: divRef,
+                        contextRef: divRef,
                         position: /* Bottom */1,
-                        children: React.createElement("div", {
-                              className: contextLayer
-                            }, "ContextLayer")
+                        children: (function (param) {
+                            return React.createElement("div", {
+                                        className: contextLayer
+                                      }, "ContextLayer");
+                          })
                       }), React.createElement(ContextLayer$ReactHooksTemplate.make, {
-                        context: divRef,
+                        contextRef: divRef,
                         position: /* Left */2,
-                        children: React.createElement("div", {
-                              className: contextLayer
-                            }, "ContextLayer")
+                        children: (function (param) {
+                            return React.createElement("div", {
+                                        className: contextLayer
+                                      }, "ContextLayer");
+                          })
                       }), React.createElement(ContextLayer$ReactHooksTemplate.make, {
-                        context: divRef,
+                        contextRef: divRef,
                         position: /* Right */3,
-                        children: React.createElement("div", {
-                              className: contextLayer
-                            }, "ContextLayer")
+                        children: (function (param) {
+                            return React.createElement("div", {
+                                        className: contextLayer
+                                      }, "ContextLayer");
+                          })
                       })) : null);
 }
 
@@ -204,7 +213,23 @@ function App(Props) {
                                   })
                             }))), React.createElement("div", {
                       className: section
-                    }, React.createElement(App$ContextLayerExample, { }))), React.createElement(Layer$ReactHooksTemplate.container, { }));
+                    }, React.createElement(Text$ReactHooksTemplate.header, {
+                          children: "ContextLayer"
+                        }), React.createElement(App$ContextLayerExample, { })), React.createElement("div", {
+                      className: section
+                    }, React.createElement(Text$ReactHooksTemplate.header, {
+                          children: "Tooltip"
+                        }), React.createElement(Tooltip$ReactHooksTemplate.make, {
+                          text: "tooltip",
+                          children: (function (contextRef, onMouseEnter, onMouseLeave) {
+                              return React.createElement(Button$ReactHooksTemplate.make, {
+                                          children: "Hover me",
+                                          onMouseEnter: onMouseEnter,
+                                          onMouseLeave: onMouseLeave,
+                                          ref: contextRef
+                                        });
+                            })
+                        }))), React.createElement(Layer$ReactHooksTemplate.container, { }));
 }
 
 var make = App;

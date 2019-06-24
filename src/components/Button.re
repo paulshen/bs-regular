@@ -21,17 +21,35 @@ type buttonType =
   | Secondary;
 
 [@react.component]
-let make = (~type_=Primary, ~children, ~className=?, ~onClick=?) => {
-  <button
-    className={Cn.make([
-      Styles.button,
-      switch (type_) {
-      | Primary => Styles.primary
-      | Secondary => Styles.secondary
-      },
-      Cn.unpack(className),
-    ])}
-    ?onClick>
-    children
-  </button>;
-};
+let make =
+  React.forwardRef(
+    (
+      ~type_=Primary,
+      ~children,
+      ~className=?,
+      ~onClick=?,
+      ~onMouseEnter=?,
+      ~onMouseLeave=?,
+      forwardedRef,
+    ) =>
+    <button
+      className={Cn.make([
+        Styles.button,
+        switch (type_) {
+        | Primary => Styles.primary
+        | Secondary => Styles.secondary
+        },
+        Cn.unpack(className),
+      ])}
+      ?onClick
+      ?onMouseEnter
+      ?onMouseLeave
+      ref=?{
+        Belt.Option.map(
+          Js.Nullable.toOption(forwardedRef),
+          ReactDOMRe.Ref.domRef,
+        )
+      }>
+      children
+    </button>
+  );

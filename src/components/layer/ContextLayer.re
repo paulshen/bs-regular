@@ -14,6 +14,8 @@ type anchor =
   | TopLeft(float, float)
   | TopRight(float, float);
 
+exception RefHasNoElement;
+
 let getAnchor =
     (
       contextRect: Webapi__Dom__DomRect.t,
@@ -33,15 +35,18 @@ let getAnchor =
 [@react.component]
 let make =
     (
-      ~context: React.Ref.t(Js.Nullable.t(Dom.element))=?,
+      ~contextRef: React.Ref.t(Js.Nullable.t(Dom.element))=?,
       ~position=Top,
-      ~children,
+      ~children: (~position: position) => React.element,
     ) => {
   let (anchor, setAnchor) = React.useState(() => None);
   let divRef = React.useRef(Js.Nullable.null);
   React.useLayoutEffect0(() => {
     let contextElement =
-      Belt.Option.getExn(Js.Nullable.toOption(React.Ref.current(context)));
+      switch (Js.Nullable.toOption(React.Ref.current(contextRef))) {
+      | Some(element) => element
+      | None => raise(RefHasNoElement)
+      };
     let contextRect =
       Webapi.Dom.Element.getBoundingClientRect(contextElement);
 
@@ -78,7 +83,9 @@ let make =
       ref={ReactDOMRe.Ref.domRef(divRef)}
       className=Styles.layer
       style=?outerStyle>
-      <div className=Styles.layer style=?innerStyle> children </div>
+      <div className=Styles.layer style=?innerStyle>
+        {children(~position)}
+      </div>
     </div>
   </Layer>;
 };

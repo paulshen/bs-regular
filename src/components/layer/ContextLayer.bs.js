@@ -7,6 +7,7 @@ var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
+var Caml_exceptions = require("bs-platform/lib/js/caml_exceptions.js");
 var Layer$ReactHooksTemplate = require("./Layer.bs.js");
 
 var layer = Css.style(/* :: */[
@@ -15,6 +16,8 @@ var layer = Css.style(/* :: */[
     ]);
 
 var Styles = /* module */[/* layer */layer];
+
+var RefHasNoElement = Caml_exceptions.create("ContextLayer-ReactHooksTemplate.RefHasNoElement");
 
 function getAnchor(contextRect, _layerRect, position) {
   switch (position) {
@@ -43,7 +46,7 @@ function getAnchor(contextRect, _layerRect, position) {
 }
 
 function ContextLayer(Props) {
-  var context = Props.context;
+  var contextRef = Props.contextRef;
   var match = Props.position;
   var position = match !== undefined ? match : /* Top */0;
   var children = Props.children;
@@ -54,7 +57,13 @@ function ContextLayer(Props) {
   var anchor = match$1[0];
   var divRef = React.useRef(null);
   React.useLayoutEffect((function () {
-          var contextElement = Belt_Option.getExn(Caml_option.nullable_to_opt(context.current));
+          var match = contextRef.current;
+          var contextElement;
+          if (match == null) {
+            throw RefHasNoElement;
+          } else {
+            contextElement = match;
+          }
           var contextRect = contextElement.getBoundingClientRect();
           var layerDiv = Belt_Option.getExn(Caml_option.nullable_to_opt(divRef.current));
           var layerRect = layerDiv.getBoundingClientRect();
@@ -103,13 +112,14 @@ function ContextLayer(Props) {
     tmp$1.style = Caml_option.valFromOption(innerStyle);
   }
   return React.createElement(Layer$ReactHooksTemplate.make, {
-              children: React.createElement("div", tmp, React.createElement("div", tmp$1, children))
+              children: React.createElement("div", tmp, React.createElement("div", tmp$1, Curry._1(children, position)))
             });
 }
 
 var make = ContextLayer;
 
 exports.Styles = Styles;
+exports.RefHasNoElement = RefHasNoElement;
 exports.getAnchor = getAnchor;
 exports.make = make;
 /* layer Not a pure module */
