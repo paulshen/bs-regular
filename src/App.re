@@ -1,8 +1,6 @@
 module Styles = {
   open Css;
-  let root =
-    style([%style {|
-    font-family: Inter;
+  let root = style([%style {|
     padding: 32px;
   |}]);
   let button = style([%style {|
@@ -17,6 +15,7 @@ module Styles = {
     margin-bottom: 16px;
   |}]);
   let gridCell = style([backgroundColor(`hex(Colors.primary475))]);
+  let contextLayer = style([backgroundColor(`hex(Colors.primary475))]);
 };
 
 let repeatElement = (num: int, render) => {
@@ -25,6 +24,37 @@ let repeatElement = (num: int, render) => {
     Js.Array.push(render(i), rv) |> ignore;
   };
   rv;
+};
+
+module ContextLayerExample = {
+  [@react.component]
+  let make = () => {
+    let (showLayer, setShowLayer) = React.useState(() => false);
+    let divRef = React.useRef(Js.Nullable.null);
+    React.useEffect0(() => {
+      setShowLayer(_ => true);
+      None;
+    });
+    <>
+      <div ref={ReactDOMRe.Ref.domRef(divRef)}>
+        {React.string("Hello")}
+      </div>
+      {showLayer
+         ? <>
+             <ContextLayer context=divRef>
+               <div className=Styles.contextLayer>
+                 {React.string("ContextLayer")}
+               </div>
+             </ContextLayer>
+             <ContextLayer position=ContextLayer.Bottom context=divRef>
+               <div className=Styles.contextLayer>
+                 {React.string("ContextLayer")}
+               </div>
+             </ContextLayer>
+           </>
+         : React.null}
+    </>;
+  };
 };
 
 [@react.component]
@@ -94,6 +124,7 @@ let make = () => {
           <Grid.cell span=6> <TextInput placeholder="Last name" /> </Grid.cell>
         </Grid.row>
       </div>
+      <div className=Styles.section> <ContextLayerExample /> </div>
     </div>
     <Layer.container />
   </Layer.provider>;

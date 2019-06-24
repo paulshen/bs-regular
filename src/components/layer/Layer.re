@@ -1,3 +1,14 @@
+module Styles = {
+  open Css;
+  let container =
+    style([
+      position(`absolute),
+      top(`zero),
+      left(`zero),
+      width(`percent(100.)),
+    ]);
+};
+
 type layerContext = {
   container: option(Dom.element),
   setContainer: Dom.element => unit,
@@ -39,5 +50,5 @@ let container = () => {
     setContainer(element);
     None;
   });
-  <div ref={ReactDOMRe.Ref.domRef(domRef)} />;
+  <div ref={ReactDOMRe.Ref.domRef(domRef)} className=Styles.container />;
 };

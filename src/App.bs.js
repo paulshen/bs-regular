@@ -12,13 +12,11 @@ var Colors$ReactHooksTemplate = require("./components/theme/Colors.bs.js");
 var Divider$ReactHooksTemplate = require("./components/Divider.bs.js");
 var Spacing$ReactHooksTemplate = require("./components/theme/Spacing.bs.js");
 var TextInput$ReactHooksTemplate = require("./components/inputs/TextInput.bs.js");
+var ContextLayer$ReactHooksTemplate = require("./components/layer/ContextLayer.bs.js");
 
 var root = Css.style(/* :: */[
-      Css.fontFamily("Inter"),
-      /* :: */[
-        Css.padding(Css.px(32)),
-        /* [] */0
-      ]
+      Css.padding(Css.px(32)),
+      /* [] */0
     ]);
 
 var button = Css.style(/* :: */[
@@ -47,12 +45,21 @@ var gridCell = Css.style(/* :: */[
       /* [] */0
     ]);
 
+var contextLayer = Css.style(/* :: */[
+      Css.backgroundColor(/* `hex */[
+            5194459,
+            Colors$ReactHooksTemplate.primary475
+          ]),
+      /* [] */0
+    ]);
+
 var Styles = /* module */[
   /* root */root,
   /* button */button,
   /* section */section,
   /* gridRow */gridRow,
-  /* gridCell */gridCell
+  /* gridCell */gridCell,
+  /* contextLayer */contextLayer
 ];
 
 function repeatElement(num, render) {
@@ -62,6 +69,36 @@ function repeatElement(num, render) {
   }
   return rv;
 }
+
+function App$ContextLayerExample(Props) {
+  var match = React.useState((function () {
+          return false;
+        }));
+  var setShowLayer = match[1];
+  var divRef = React.useRef(null);
+  React.useEffect((function () {
+          Curry._1(setShowLayer, (function (param) {
+                  return true;
+                }));
+          return undefined;
+        }), ([]));
+  return React.createElement(React.Fragment, undefined, React.createElement("div", {
+                  ref: divRef
+                }, "Hello"), match[0] ? React.createElement(React.Fragment, undefined, React.createElement(ContextLayer$ReactHooksTemplate.make, {
+                        context: divRef,
+                        children: React.createElement("div", {
+                              className: contextLayer
+                            }, "ContextLayer")
+                      }), React.createElement(ContextLayer$ReactHooksTemplate.make, {
+                        context: divRef,
+                        position: /* Bottom */1,
+                        children: React.createElement("div", {
+                              className: contextLayer
+                            }, "ContextLayer")
+                      })) : null);
+}
+
+var ContextLayerExample = /* module */[/* make */App$ContextLayerExample];
 
 function App(Props) {
   return React.createElement(Layer$ReactHooksTemplate.provider, {
@@ -152,12 +189,15 @@ function App(Props) {
                               children: React.createElement(TextInput$ReactHooksTemplate.make, {
                                     placeholder: "Last name"
                                   })
-                            })))), React.createElement(Layer$ReactHooksTemplate.container, { }));
+                            }))), React.createElement("div", {
+                      className: section
+                    }, React.createElement(App$ContextLayerExample, { }))), React.createElement(Layer$ReactHooksTemplate.container, { }));
 }
 
 var make = App;
 
 exports.Styles = Styles;
 exports.repeatElement = repeatElement;
+exports.ContextLayerExample = ContextLayerExample;
 exports.make = make;
 /* root Not a pure module */
