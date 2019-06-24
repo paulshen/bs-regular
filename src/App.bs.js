@@ -86,12 +86,25 @@ function App$ContextLayerExample(Props) {
                   ref: divRef
                 }, "Hello"), match[0] ? React.createElement(React.Fragment, undefined, React.createElement(ContextLayer$ReactHooksTemplate.make, {
                         context: divRef,
+                        position: /* Top */0,
                         children: React.createElement("div", {
                               className: contextLayer
                             }, "ContextLayer")
                       }), React.createElement(ContextLayer$ReactHooksTemplate.make, {
                         context: divRef,
                         position: /* Bottom */1,
+                        children: React.createElement("div", {
+                              className: contextLayer
+                            }, "ContextLayer")
+                      }), React.createElement(ContextLayer$ReactHooksTemplate.make, {
+                        context: divRef,
+                        position: /* Left */2,
+                        children: React.createElement("div", {
+                              className: contextLayer
+                            }, "ContextLayer")
+                      }), React.createElement(ContextLayer$ReactHooksTemplate.make, {
+                        context: divRef,
+                        position: /* Right */3,
                         children: React.createElement("div", {
                               className: contextLayer
                             }, "ContextLayer")

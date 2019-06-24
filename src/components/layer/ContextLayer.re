@@ -5,11 +5,14 @@ module Styles = {
 
 type position =
   | Top
-  | Bottom;
+  | Bottom
+  | Left
+  | Right;
 
 type anchor =
   | BottomLeft(float, float)
-  | TopLeft(float, float);
+  | TopLeft(float, float)
+  | TopRight(float, float);
 
 let getAnchor =
     (
@@ -21,6 +24,8 @@ let getAnchor =
     switch (position) {
     | Top => BottomLeft(top(contextRect), left(contextRect))
     | Bottom => TopLeft(bottom(contextRect), left(contextRect))
+    | Left => TopRight(top(contextRect), left(contextRect))
+    | Right => TopLeft(top(contextRect), right(contextRect))
     }
   );
 };
@@ -52,7 +57,8 @@ let make =
       anchor,
       fun
       | BottomLeft(y, x)
-      | TopLeft(y, x) =>
+      | TopLeft(y, x)
+      | TopRight(y, x) =>
         ReactDOMRe.Style.make(
           ~top=Js.Float.toString(y) ++ "px",
           ~left=Js.Float.toString(x) ++ "px",
@@ -64,7 +70,8 @@ let make =
       anchor,
       fun
       | BottomLeft(_, _) => ReactDOMRe.Style.make(~bottom="0", ~left="0", ())
-      | TopLeft(_, _) => ReactDOMRe.Style.make(~top="0", ~left="0", ()),
+      | TopLeft(_, _) => ReactDOMRe.Style.make(~top="0", ~left="0", ())
+      | TopRight(_, _) => ReactDOMRe.Style.make(~top="0", ~right="0", ()),
     );
   <Layer>
     <div

@@ -41,12 +41,22 @@ module ContextLayerExample = {
       </div>
       {showLayer
          ? <>
-             <ContextLayer context=divRef>
+             <ContextLayer position=ContextLayer.Top context=divRef>
                <div className=Styles.contextLayer>
                  {React.string("ContextLayer")}
                </div>
              </ContextLayer>
              <ContextLayer position=ContextLayer.Bottom context=divRef>
+               <div className=Styles.contextLayer>
+                 {React.string("ContextLayer")}
+               </div>
+             </ContextLayer>
+             <ContextLayer position=ContextLayer.Left context=divRef>
+               <div className=Styles.contextLayer>
+                 {React.string("ContextLayer")}
+               </div>
+             </ContextLayer>
+             <ContextLayer position=ContextLayer.Right context=divRef>
                <div className=Styles.contextLayer>
                  {React.string("ContextLayer")}
                </div>

@@ -17,16 +17,28 @@ var layer = Css.style(/* :: */[
 var Styles = /* module */[/* layer */layer];
 
 function getAnchor(contextRect, _layerRect, position) {
-  if (position) {
-    return /* TopLeft */Block.__(1, [
-              contextRect.bottom,
-              contextRect.left
-            ]);
-  } else {
-    return /* BottomLeft */Block.__(0, [
-              contextRect.top,
-              contextRect.left
-            ]);
+  switch (position) {
+    case 0 : 
+        return /* BottomLeft */Block.__(0, [
+                  contextRect.top,
+                  contextRect.left
+                ]);
+    case 1 : 
+        return /* TopLeft */Block.__(1, [
+                  contextRect.bottom,
+                  contextRect.left
+                ]);
+    case 2 : 
+        return /* TopRight */Block.__(2, [
+                  contextRect.top,
+                  contextRect.left
+                ]);
+    case 3 : 
+        return /* TopLeft */Block.__(1, [
+                  contextRect.top,
+                  contextRect.right
+                ]);
+    
   }
 }
 
@@ -58,16 +70,23 @@ function ContextLayer(Props) {
                 };
         }));
   var innerStyle = Belt_Option.map(anchor, (function (param) {
-          if (param.tag) {
-            return {
-                    left: "0",
-                    top: "0"
-                  };
-          } else {
-            return {
-                    bottom: "0",
-                    left: "0"
-                  };
+          switch (param.tag | 0) {
+            case 0 : 
+                return {
+                        bottom: "0",
+                        left: "0"
+                      };
+            case 1 : 
+                return {
+                        left: "0",
+                        top: "0"
+                      };
+            case 2 : 
+                return {
+                        right: "0",
+                        top: "0"
+                      };
+            
           }
         }));
   var tmp = {
