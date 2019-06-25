@@ -4,6 +4,7 @@
 var Cn = require("re-classnames/src/Cn.bs.js");
 var Css = require("bs-css/src/Css.js");
 var React = require("react");
+var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var Colors$ReactHooksTemplate = require("../theme/Colors.bs.js");
 var FormLabel$ReactHooksTemplate = require("./FormLabel.bs.js");
@@ -107,40 +108,60 @@ function getUniqueId(param) {
   return String(uniqueId);
 }
 
-function TextInput(Props) {
-  var className = Props.className;
-  var label = Props.label;
-  var placeholder = Props.placeholder;
-  var match = React.useState((function () {
-          return getUniqueId(/* () */0);
-        }));
-  var inputId = match[0];
-  var tmp = {
-    className: Cn.make(/* :: */[
-          input,
-          /* :: */[
-            Cn.unpack(className),
-            /* [] */0
-          ]
-        ]),
-    id: inputId,
-    type: "text"
-  };
-  if (placeholder !== undefined) {
-    tmp.placeholder = Caml_option.valFromOption(placeholder);
-  }
-  var input$1 = React.createElement("input", tmp);
-  if (label !== undefined) {
-    return React.createElement(React.Fragment, undefined, React.createElement(FormLabel$ReactHooksTemplate.make, {
-                    children: label,
-                    htmlFor: inputId
-                  }), input$1);
-  } else {
-    return input$1;
-  }
-}
-
-var make = TextInput;
+var make = React.forwardRef((function (Props, forwardedRef) {
+        var className = Props.className;
+        var label = Props.label;
+        var placeholder = Props.placeholder;
+        var value = Props.value;
+        var onChange = Props.onChange;
+        var onFocus = Props.onFocus;
+        var onBlur = Props.onBlur;
+        var match = React.useState((function () {
+                return getUniqueId(/* () */0);
+              }));
+        var inputId = match[0];
+        var tmp = {
+          className: Cn.make(/* :: */[
+                input,
+                /* :: */[
+                  Cn.unpack(className),
+                  /* [] */0
+                ]
+              ]),
+          id: inputId,
+          type: "text"
+        };
+        var tmp$1 = Belt_Option.map((forwardedRef == null) ? undefined : Caml_option.some(forwardedRef), (function (prim) {
+                return prim;
+              }));
+        if (tmp$1 !== undefined) {
+          tmp.ref = Caml_option.valFromOption(tmp$1);
+        }
+        if (placeholder !== undefined) {
+          tmp.placeholder = Caml_option.valFromOption(placeholder);
+        }
+        if (value !== undefined) {
+          tmp.value = Caml_option.valFromOption(value);
+        }
+        if (onFocus !== undefined) {
+          tmp.onFocus = Caml_option.valFromOption(onFocus);
+        }
+        if (onBlur !== undefined) {
+          tmp.onBlur = Caml_option.valFromOption(onBlur);
+        }
+        if (onChange !== undefined) {
+          tmp.onChange = Caml_option.valFromOption(onChange);
+        }
+        var input$1 = React.createElement("input", tmp);
+        if (label !== undefined) {
+          return React.createElement(React.Fragment, undefined, React.createElement(FormLabel$ReactHooksTemplate.make, {
+                          children: label,
+                          htmlFor: inputId
+                        }), input$1);
+        } else {
+          return input$1;
+        }
+      }));
 
 exports.Styles = Styles;
 exports.nextUniqueId = nextUniqueId;

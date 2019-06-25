@@ -18,16 +18,22 @@ exception RefHasNoElement;
 
 let getAnchor =
     (
-      contextRect: Webapi__Dom__DomRect.t,
-      _layerRect: Webapi__Dom__DomRect.t,
+      contextRect: Webapi.Dom.DomRect.t,
+      _layerRect: Webapi.Dom.DomRect.t,
       position: position,
     ) => {
-  Webapi__Dom__DomRect.(
+  let scrollX = Webapi.Dom.Window.scrollX(Webapi.Dom.window);
+  let scrollY = Webapi.Dom.Window.scrollY(Webapi.Dom.window);
+  Webapi.Dom.DomRect.(
     switch (position) {
-    | Top => BottomLeft(top(contextRect), left(contextRect))
-    | Bottom => TopLeft(bottom(contextRect), left(contextRect))
-    | Left => TopRight(top(contextRect), left(contextRect))
-    | Right => TopLeft(top(contextRect), right(contextRect))
+    | Top =>
+      BottomLeft(scrollY +. top(contextRect), scrollX +. left(contextRect))
+    | Bottom =>
+      TopLeft(scrollY +. bottom(contextRect), scrollX +. left(contextRect))
+    | Left =>
+      TopRight(scrollY +. top(contextRect), scrollX +. left(contextRect))
+    | Right =>
+      TopLeft(scrollY +. top(contextRect), scrollX +. right(contextRect))
     }
   );
 };

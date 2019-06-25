@@ -9,6 +9,7 @@ var Text$ReactHooksTemplate = require("./components/Text.bs.js");
 var Layer$ReactHooksTemplate = require("./components/layer/Layer.bs.js");
 var Button$ReactHooksTemplate = require("./components/Button.bs.js");
 var Colors$ReactHooksTemplate = require("./components/theme/Colors.bs.js");
+var Select$ReactHooksTemplate = require("./components/inputs/Select.bs.js");
 var Divider$ReactHooksTemplate = require("./components/Divider.bs.js");
 var Spacing$ReactHooksTemplate = require("./components/theme/Spacing.bs.js");
 var Tooltip$ReactHooksTemplate = require("./components/Tooltip.bs.js");
@@ -122,6 +123,28 @@ function App$ContextLayerExample(Props) {
 
 var ContextLayerExample = /* module */[/* make */App$ContextLayerExample];
 
+var options = /* array */[
+  /* record */[/* label */"FB"],
+  /* record */[/* label */"GOOGL"]
+];
+
+function App$SelectExample(Props) {
+  var getOptions = function (value) {
+    var lowercaseValue = value.toLowerCase();
+    return options.filter((function (option) {
+                  return option[/* label */0].toLowerCase().startsWith(lowercaseValue);
+                }));
+  };
+  return React.createElement(Select$ReactHooksTemplate.make, {
+              getOptions: getOptions
+            });
+}
+
+var SelectExample = /* module */[
+  /* options */options,
+  /* make */App$SelectExample
+];
+
 function App(Props) {
   return React.createElement(Layer$ReactHooksTemplate.provider, {
               children: null
@@ -231,7 +254,11 @@ function App(Props) {
                                           ref: contextRef
                                         });
                             })
-                        }))), React.createElement(Layer$ReactHooksTemplate.container, { }));
+                        })), React.createElement("div", {
+                      className: section
+                    }, React.createElement(Text$ReactHooksTemplate.header, {
+                          children: "Select"
+                        }), React.createElement(App$SelectExample, { }))), React.createElement(Layer$ReactHooksTemplate.container, { }));
 }
 
 var make = App;
@@ -239,5 +266,6 @@ var make = App;
 exports.Styles = Styles;
 exports.repeatElement = repeatElement;
 exports.ContextLayerExample = ContextLayerExample;
+exports.SelectExample = SelectExample;
 exports.make = make;
 /* root Not a pure module */

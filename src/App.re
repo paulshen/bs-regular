@@ -71,6 +71,26 @@ module ContextLayerExample = {
   };
 };
 
+module SelectExample = {
+  let options: array(Select.option) = [|{label: "FB"}, {label: "GOOGL"}|];
+
+  [@react.component]
+  let make = () => {
+    let getOptions = value => {
+      let lowercaseValue = Js.String.toLowerCase(value);
+      Js.Array.filter(
+        (option: Select.option) =>
+          Js.String.startsWith(
+            lowercaseValue,
+            Js.String.toLowerCase(option.label),
+          ),
+        options,
+      );
+    };
+    <Select getOptions />;
+  };
+};
+
 [@react.component]
 let make = () => {
   <Layer.provider>
@@ -152,6 +172,10 @@ let make = () => {
                {React.string("Hover me")}
              </Button>}
         </Tooltip>
+      </div>
+      <div className=Styles.section>
+        <Text.header> {React.string("Select")} </Text.header>
+        <SelectExample />
       </div>
     </div>
     <Layer.container />

@@ -20,26 +20,28 @@ var Styles = /* module */[/* layer */layer];
 var RefHasNoElement = Caml_exceptions.create("ContextLayer-ReactHooksTemplate.RefHasNoElement");
 
 function getAnchor(contextRect, _layerRect, position) {
+  var scrollX = window.scrollX;
+  var scrollY = window.scrollY;
   switch (position) {
     case 0 : 
         return /* BottomLeft */Block.__(0, [
-                  contextRect.top,
-                  contextRect.left
+                  scrollY + contextRect.top,
+                  scrollX + contextRect.left
                 ]);
     case 1 : 
         return /* TopLeft */Block.__(1, [
-                  contextRect.bottom,
-                  contextRect.left
+                  scrollY + contextRect.bottom,
+                  scrollX + contextRect.left
                 ]);
     case 2 : 
         return /* TopRight */Block.__(2, [
-                  contextRect.top,
-                  contextRect.left
+                  scrollY + contextRect.top,
+                  scrollX + contextRect.left
                 ]);
     case 3 : 
         return /* TopLeft */Block.__(1, [
-                  contextRect.top,
-                  contextRect.right
+                  scrollY + contextRect.top,
+                  scrollX + contextRect.right
                 ]);
     
   }

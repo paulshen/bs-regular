@@ -27,21 +27,42 @@ let getUniqueId = () => {
 };
 
 [@react.component]
-let make = (~className=?, ~label=?, ~placeholder=?) => {
-  let (inputId, _) = React.useState(() => getUniqueId());
-  let input =
-    <input
-      type_="text"
-      className={Cn.make([Styles.input, Cn.unpack(className)])}
-      id=inputId
-      ?placeholder
-    />;
-  switch (label) {
-  | Some(label) =>
-    <>
-      <FormLabel htmlFor=inputId> {React.string(label)} </FormLabel>
-      input
-    </>
-  | None => input
-  };
-};
+let make =
+  React.forwardRef(
+    (
+      ~className=?,
+      ~label=?,
+      ~placeholder=?,
+      ~value=?,
+      ~onChange=?,
+      ~onFocus=?,
+      ~onBlur=?,
+      forwardedRef,
+    ) => {
+    let (inputId, _) = React.useState(() => getUniqueId());
+    let input =
+      <input
+        type_="text"
+        className={Cn.make([Styles.input, Cn.unpack(className)])}
+        id=inputId
+        ?placeholder
+        ?value
+        ?onChange
+        ?onFocus
+        ?onBlur
+        ref=?{
+          Belt.Option.map(
+            Js.Nullable.toOption(forwardedRef),
+            ReactDOMRe.Ref.domRef,
+          )
+        }
+      />;
+    switch (label) {
+    | Some(label) =>
+      <>
+        <FormLabel htmlFor=inputId> {React.string(label)} </FormLabel>
+        input
+      </>
+    | None => input
+    };
+  });
