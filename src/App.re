@@ -133,9 +133,11 @@ let make = () => {
         <Text.header> {React.string("Inputs")} </Text.header>
         <Grid.row className=Spacing.marginBottom16>
           <Grid.cell span=6>
-            <TextInput placeholder="First name" />
+            <TextInput label="First name" placeholder="Harry" />
           </Grid.cell>
-          <Grid.cell span=6> <TextInput placeholder="Last name" /> </Grid.cell>
+          <Grid.cell span=6>
+            <TextInput label="Last name" placeholder="Potter" />
+          </Grid.cell>
         </Grid.row>
       </div>
       <div className=Styles.section>

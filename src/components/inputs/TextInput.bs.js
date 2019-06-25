@@ -6,6 +6,7 @@ var Css = require("bs-css/src/Css.js");
 var React = require("react");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var Colors$ReactHooksTemplate = require("../theme/Colors.bs.js");
+var FormLabel$ReactHooksTemplate = require("./FormLabel.bs.js");
 
 var input = Css.style(/* :: */[
       Css.border(/* `px */[
@@ -16,69 +17,75 @@ var input = Css.style(/* :: */[
             Colors$ReactHooksTemplate.primary450
           ]),
       /* :: */[
-        Css.boxSizing(/* borderBox */9307263),
+        Css.borderRadius(/* `px */[
+              25096,
+              2
+            ]),
         /* :: */[
-          Css.color(/* `hex */[
-                5194459,
-                Colors$ReactHooksTemplate.primary200
-              ]),
+          Css.boxSizing(/* borderBox */9307263),
           /* :: */[
-            Css.fontSize(/* `px */[
-                  25096,
-                  16
+            Css.color(/* `hex */[
+                  5194459,
+                  Colors$ReactHooksTemplate.primary200
                 ]),
             /* :: */[
-              Css.lineHeight(/* `px */[
+              Css.fontSize(/* `px */[
                     25096,
-                    24
+                    16
                   ]),
               /* :: */[
-                Css.padding4(/* `px */[
+                Css.lineHeight(/* `px */[
                       25096,
-                      8
-                    ], /* `px */[
-                      25096,
-                      8
-                    ], /* `px */[
-                      25096,
-                      8
-                    ], /* `px */[
-                      25096,
-                      16
+                      24
                     ]),
                 /* :: */[
-                  Css.transition(100, undefined, undefined, "border-color"),
+                  Css.padding4(/* `px */[
+                        25096,
+                        8
+                      ], /* `px */[
+                        25096,
+                        8
+                      ], /* `px */[
+                        25096,
+                        8
+                      ], /* `px */[
+                        25096,
+                        16
+                      ]),
                   /* :: */[
-                    Css.width(/* `percent */[
-                          -119887163,
-                          100
-                        ]),
+                    Css.transition(100, undefined, undefined, "border-color"),
                     /* :: */[
-                      Css.focus(/* :: */[
-                            Css.borderColor(/* `hex */[
-                                  5194459,
-                                  Colors$ReactHooksTemplate.primary300
-                                ]),
-                            /* :: */[
-                              Css.outlineStyle(/* none */-922086728),
-                              /* [] */0
-                            ]
+                      Css.width(/* `percent */[
+                            -119887163,
+                            100
                           ]),
                       /* :: */[
-                        Css.placeholder(/* :: */[
-                              Css.color(/* `hex */[
+                        Css.focus(/* :: */[
+                              Css.borderColor(/* `hex */[
                                     5194459,
-                                    Colors$ReactHooksTemplate.primary400
+                                    Colors$ReactHooksTemplate.primary300
                                   ]),
                               /* :: */[
-                                Css.fontWeight(/* `num */[
-                                      5496390,
-                                      300
-                                    ]),
+                                Css.outlineStyle(/* none */-922086728),
                                 /* [] */0
                               ]
                             ]),
-                        /* [] */0
+                        /* :: */[
+                          Css.placeholder(/* :: */[
+                                Css.color(/* `hex */[
+                                      5194459,
+                                      Colors$ReactHooksTemplate.primary400
+                                    ]),
+                                /* :: */[
+                                  Css.fontWeight(/* `num */[
+                                        5496390,
+                                        300
+                                      ]),
+                                  /* [] */0
+                                ]
+                              ]),
+                          /* [] */0
+                        ]
                       ]
                     ]
                   ]
@@ -92,9 +99,22 @@ var input = Css.style(/* :: */[
 
 var Styles = /* module */[/* input */input];
 
+var nextUniqueId = /* record */[/* contents */1];
+
+function getUniqueId(param) {
+  var uniqueId = nextUniqueId[0];
+  nextUniqueId[0] = uniqueId + 1 | 0;
+  return String(uniqueId);
+}
+
 function TextInput(Props) {
   var className = Props.className;
+  var label = Props.label;
   var placeholder = Props.placeholder;
+  var match = React.useState((function () {
+          return getUniqueId(/* () */0);
+        }));
+  var inputId = match[0];
   var tmp = {
     className: Cn.make(/* :: */[
           input,
@@ -103,16 +123,27 @@ function TextInput(Props) {
             /* [] */0
           ]
         ]),
+    id: inputId,
     type: "text"
   };
   if (placeholder !== undefined) {
     tmp.placeholder = Caml_option.valFromOption(placeholder);
   }
-  return React.createElement("input", tmp);
+  var input$1 = React.createElement("input", tmp);
+  if (label !== undefined) {
+    return React.createElement(React.Fragment, undefined, React.createElement(FormLabel$ReactHooksTemplate.make, {
+                    children: label,
+                    htmlFor: inputId
+                  }), input$1);
+  } else {
+    return input$1;
+  }
 }
 
 var make = TextInput;
 
 exports.Styles = Styles;
+exports.nextUniqueId = nextUniqueId;
+exports.getUniqueId = getUniqueId;
 exports.make = make;
 /* input Not a pure module */

@@ -204,12 +204,14 @@ function App(Props) {
                         }, React.createElement(Grid$ReactHooksTemplate.cell, {
                               span: 6,
                               children: React.createElement(TextInput$ReactHooksTemplate.make, {
-                                    placeholder: "First name"
+                                    label: "First name",
+                                    placeholder: "Harry"
                                   })
                             }), React.createElement(Grid$ReactHooksTemplate.cell, {
                               span: 6,
                               children: React.createElement(TextInput$ReactHooksTemplate.make, {
-                                    placeholder: "Last name"
+                                    label: "Last name",
+                                    placeholder: "Potter"
                                   })
                             }))), React.createElement("div", {
                       className: section

@@ -3,6 +3,7 @@ module Styles = {
   let input =
     style([
       border(`px(1), `solid, `hex(Colors.primary450)),
+      borderRadius(`px(2)),
       boxSizing(`borderBox),
       color(`hex(Colors.primary200)),
       fontSize(`px(16)),
@@ -18,11 +19,29 @@ module Styles = {
     ]);
 };
 
+let nextUniqueId = ref(1);
+let getUniqueId = () => {
+  let uniqueId = nextUniqueId^;
+  nextUniqueId := uniqueId + 1;
+  string_of_int(uniqueId);
+};
+
 [@react.component]
-let make = (~className=?, ~placeholder=?) => {
-  <input
-    type_="text"
-    className={Cn.make([Styles.input, Cn.unpack(className)])}
-    ?placeholder
-  />;
+let make = (~className=?, ~label=?, ~placeholder=?) => {
+  let (inputId, _) = React.useState(() => getUniqueId());
+  let input =
+    <input
+      type_="text"
+      className={Cn.make([Styles.input, Cn.unpack(className)])}
+      id=inputId
+      ?placeholder
+    />;
+  switch (label) {
+  | Some(label) =>
+    <>
+      <FormLabel htmlFor=inputId> {React.string(label)} </FormLabel>
+      input
+    </>
+  | None => input
+  };
 };
