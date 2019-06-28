@@ -178,6 +178,11 @@ function App$ModalExample(Props) {
                             })
                         }));
         }), /* array */[count]);
+  var onCloseRequest = React.useCallback((function (param) {
+          return Curry._1(setShowModal, (function (param) {
+                        return false;
+                      }));
+        }), ([]));
   return React.createElement(React.Fragment, undefined, React.createElement(Button$ReactHooksTemplate.make, {
                   children: "Show modal",
                   onClick: (function (param) {
@@ -186,7 +191,8 @@ function App$ModalExample(Props) {
                                   }));
                     })
                 }), match[0] ? React.createElement(Modal$ReactHooksTemplate.make, {
-                    renderModal: renderModal
+                    renderModal: renderModal,
+                    onCloseRequest: onCloseRequest
                   }) : null);
 }
 

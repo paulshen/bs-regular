@@ -5,6 +5,7 @@ var Css = require("bs-css/src/Css.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
+var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var Layer$ReactHooksTemplate = require("../layer/Layer.bs.js");
 
@@ -89,11 +90,12 @@ var modals = /* record */[/* contents : array */[]];
 
 var subscriptions = /* record */[/* contents : array */[]];
 
-function openModal(renderModal) {
+function openModal(renderModal, onCloseRequest) {
   var modalKey = String(nextModalKey[0]);
   modals[0] = /* array */[/* record */[
         /* modalKey */modalKey,
-        /* renderModal */renderModal
+        /* renderModal */renderModal,
+        /* onCloseRequest */onCloseRequest
       ]].concat(modals[0]);
   subscriptions[0].forEach((function (subscription) {
           return Curry._1(subscription, /* () */0);
@@ -102,12 +104,13 @@ function openModal(renderModal) {
   return modalKey;
 }
 
-function updateModal(modalKey, renderModal) {
+function updateModal(modalKey, renderModal, onCloseRequest) {
   modals[0] = modals[0].map((function (modal) {
           if (modal[/* modalKey */0] === modalKey) {
             return /* record */[
                     /* modalKey */modal[/* modalKey */0],
-                    /* renderModal */renderModal
+                    /* renderModal */renderModal,
+                    /* onCloseRequest */onCloseRequest
                   ];
           } else {
             return modal;
@@ -152,10 +155,17 @@ function Modals(Props) {
     return null;
   } else {
     return modals[0].map((function (modal, i) {
+                  var tmp = { };
+                  var tmp$1 = Belt_Option.map(modal[/* onCloseRequest */2], (function (onCloseRequest, param) {
+                          return Curry._1(onCloseRequest, /* () */0);
+                        }));
+                  if (tmp$1 !== undefined) {
+                    tmp.onClick = Caml_option.valFromOption(tmp$1);
+                  }
                   return React.createElement(Layer$ReactHooksTemplate.make, {
                               children: React.createElement("div", {
                                     className: layer
-                                  }, React.createElement(Modals$Backdrop, { }), Curry._1(modal[/* renderModal */1], /* () */0)),
+                                  }, React.createElement(Modals$Backdrop, tmp), Curry._1(modal[/* renderModal */1], /* () */0)),
                               key: String(i)
                             });
                 }));

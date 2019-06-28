@@ -44,22 +44,28 @@ function Modal$root(Props) {
 
 function Modal(Props) {
   var renderModal = Props.renderModal;
+  var onCloseRequest = Props.onCloseRequest;
   var modalKeyRef = React.useRef(undefined);
   var renderModalRef = React.useRef(renderModal);
+  var onCloseRequestRef = React.useRef(onCloseRequest);
   React.useLayoutEffect((function () {
-          var modalKey = Modals$ReactHooksTemplate.openModal(renderModal);
+          var modalKey = Modals$ReactHooksTemplate.openModal(renderModal, onCloseRequest);
           modalKeyRef.current = modalKey;
           return (function (param) {
                     return Modals$ReactHooksTemplate.closeModal(modalKey);
                   });
         }), ([]));
   React.useLayoutEffect((function () {
-          if (renderModalRef.current !== renderModal) {
-            Modals$ReactHooksTemplate.updateModal(Belt_Option.getExn(modalKeyRef.current), renderModal);
+          if (renderModalRef.current !== renderModal || onCloseRequestRef.current !== onCloseRequest) {
+            Modals$ReactHooksTemplate.updateModal(Belt_Option.getExn(modalKeyRef.current), renderModal, onCloseRequest);
             renderModalRef.current = renderModal;
+            onCloseRequestRef.current = onCloseRequest;
           }
           return undefined;
-        }), /* array */[renderModal]);
+        }), /* tuple */[
+        renderModal,
+        onCloseRequest
+      ]);
   return null;
 }
 

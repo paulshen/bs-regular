@@ -112,11 +112,12 @@ module ModalExample = {
           </Modal.root>,
         [|count|],
       );
+    let onCloseRequest = React.useCallback0(() => setShowModal(_ => false));
     <>
       <Button onClick={_ => setShowModal(_ => true)}>
         {React.string("Show modal")}
       </Button>
-      {showModal ? <Modal renderModal /> : React.null}
+      {showModal ? <Modal renderModal onCloseRequest /> : React.null}
     </>;
   };
 };

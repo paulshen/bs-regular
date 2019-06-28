@@ -35,24 +35,26 @@ let nextModalKey = ref(1);
 type modal = {
   modalKey,
   renderModal: unit => React.element,
+  onCloseRequest: option(unit => unit),
 };
 let modals: ref(array(modal)) = ref([||]);
 let subscriptions: ref(array(unit => unit)) = ref([||]);
 
-let openModal = (~renderModal) => {
+let openModal = (~renderModal, ~onCloseRequest) => {
   let modalKey = string_of_int(nextModalKey^);
-  modals := Js.Array.concat(modals^, [|{modalKey, renderModal}|]);
+  modals :=
+    Js.Array.concat(modals^, [|{modalKey, renderModal, onCloseRequest}|]);
   subscriptions^ |> Js.Array.forEach(subscription => subscription());
   nextModalKey := nextModalKey^ + 1;
   modalKey;
 };
 
-let updateModal = (modalKey: modalKey, ~renderModal) => {
+let updateModal = (modalKey: modalKey, ~renderModal, ~onCloseRequest) => {
   modals :=
     Js.Array.map(
       modal =>
         if (modal.modalKey == modalKey) {
-          {...modal, renderModal};
+          {...modal, renderModal, onCloseRequest};
         } else {
           modal;
         },
@@ -90,7 +92,13 @@ let make = () => {
         (modal, i) =>
           <Layer key={string_of_int(i)}>
             <div className=Styles.layer>
-              <Backdrop />
+              <Backdrop
+                onClick=?{
+                  Belt.Option.map(modal.onCloseRequest, (onCloseRequest, _) =>
+                    onCloseRequest()
+                  )
+                }
+              />
               {modal.renderModal()}
             </div>
           </Layer>,

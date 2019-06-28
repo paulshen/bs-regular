@@ -15,26 +15,30 @@ let root = (~children) => {
 };
 
 [@react.component]
-let make = (~renderModal) => {
+let make = (~renderModal, ~onCloseRequest=?, ()) => {
   let modalKeyRef = React.useRef(None);
   let renderModalRef = React.useRef(renderModal);
+  let onCloseRequestRef = React.useRef(onCloseRequest);
   React.useLayoutEffect0(() => {
-    let modalKey = Modals.openModal(~renderModal);
+    let modalKey = Modals.openModal(~renderModal, ~onCloseRequest);
     modalKeyRef->React.Ref.setCurrent(Some(modalKey));
     Some(() => Modals.closeModal(modalKey));
   });
-  React.useLayoutEffect1(
+  React.useLayoutEffect2(
     () => {
-      if (React.Ref.current(renderModalRef) !== renderModal) {
+      if (React.Ref.current(renderModalRef) !== renderModal
+          || React.Ref.current(onCloseRequestRef) !== onCloseRequest) {
         Modals.updateModal(
           Belt.Option.getExn(React.Ref.current(modalKeyRef)),
           ~renderModal,
+          ~onCloseRequest,
         );
         renderModalRef->React.Ref.setCurrent(renderModal);
+        onCloseRequestRef->React.Ref.setCurrent(onCloseRequest);
       };
       None;
     },
-    [|renderModal|],
+    (renderModal, onCloseRequest),
   );
   React.null;
 };
