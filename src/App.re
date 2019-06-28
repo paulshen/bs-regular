@@ -91,6 +91,36 @@ module SelectExample = {
   };
 };
 
+module ModalExample = {
+  [@react.component]
+  let make = () => {
+    let (showModal, setShowModal) = React.useState(() => false);
+    let (count, setCount) = React.useState(() => 1);
+    let renderModal =
+      React.useCallback1(
+        () =>
+          <Modal.root>
+            <Text.body> {React.string("Modal")} </Text.body>
+            <div>
+              <Button onClick={_ => setCount(count => count + 1)}>
+                {React.string(string_of_int(count))}
+              </Button>
+            </div>
+            <Button onClick={_ => setShowModal(_ => false)}>
+              {React.string("Hide")}
+            </Button>
+          </Modal.root>,
+        [|count|],
+      );
+    <>
+      <Button onClick={_ => setShowModal(_ => true)}>
+        {React.string("Show modal")}
+      </Button>
+      {showModal ? <Modal renderModal /> : React.null}
+    </>;
+  };
+};
+
 [@react.component]
 let make = () => {
   <Layer.provider>
@@ -177,7 +207,12 @@ let make = () => {
         <Text.header> {React.string("Select")} </Text.header>
         <SelectExample />
       </div>
+      <div className=Styles.section>
+        <Text.header> {React.string("Modal")} </Text.header>
+        <ModalExample />
+      </div>
     </div>
+    <Modals />
     <Layer.container />
   </Layer.provider>;
 };
