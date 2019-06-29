@@ -7,16 +7,16 @@ var React = require("react");
 var Grid$ReactHooksTemplate = require("./components/Grid.bs.js");
 var Text$ReactHooksTemplate = require("./components/Text.bs.js");
 var Layer$ReactHooksTemplate = require("./components/layer/Layer.bs.js");
-var Modal$ReactHooksTemplate = require("./components/modal/Modal.bs.js");
 var Button$ReactHooksTemplate = require("./components/Button.bs.js");
 var Colors$ReactHooksTemplate = require("./components/theme/Colors.bs.js");
 var Modals$ReactHooksTemplate = require("./components/modal/Modals.bs.js");
-var Select$ReactHooksTemplate = require("./components/inputs/Select.bs.js");
 var Divider$ReactHooksTemplate = require("./components/Divider.bs.js");
 var Spacing$ReactHooksTemplate = require("./components/theme/Spacing.bs.js");
 var Tooltip$ReactHooksTemplate = require("./components/Tooltip.bs.js");
 var TextInput$ReactHooksTemplate = require("./components/inputs/TextInput.bs.js");
-var ContextLayer$ReactHooksTemplate = require("./components/layer/ContextLayer.bs.js");
+var ModalExample$ReactHooksTemplate = require("./examples/ModalExample.bs.js");
+var SelectExample$ReactHooksTemplate = require("./examples/SelectExample.bs.js");
+var ContextLayerExample$ReactHooksTemplate = require("./examples/ContextLayerExample.bs.js");
 
 var root = Css.style(/* :: */[
       Css.padding(Css.px(32)),
@@ -49,21 +49,12 @@ var gridCell = Css.style(/* :: */[
       /* [] */0
     ]);
 
-var contextLayer = Css.style(/* :: */[
-      Css.backgroundColor(/* `hex */[
-            5194459,
-            Colors$ReactHooksTemplate.primary475
-          ]),
-      /* [] */0
-    ]);
-
 var Styles = /* module */[
   /* root */root,
   /* button */button,
   /* section */section,
   /* gridRow */gridRow,
-  /* gridCell */gridCell,
-  /* contextLayer */contextLayer
+  /* gridCell */gridCell
 ];
 
 function repeatElement(num, render) {
@@ -73,130 +64,6 @@ function repeatElement(num, render) {
   }
   return rv;
 }
-
-function App$ContextLayerExample(Props) {
-  var match = React.useState((function () {
-          return false;
-        }));
-  var setShowLayer = match[1];
-  var divRef = React.useRef(null);
-  React.useEffect((function () {
-          Curry._1(setShowLayer, (function (param) {
-                  return true;
-                }));
-          return undefined;
-        }), ([]));
-  return React.createElement(React.Fragment, undefined, React.createElement("div", {
-                  ref: divRef
-                }, "Context"), match[0] ? React.createElement(React.Fragment, undefined, React.createElement(ContextLayer$ReactHooksTemplate.make, {
-                        contextRef: divRef,
-                        position: /* Top */0,
-                        children: (function (param) {
-                            return React.createElement("div", {
-                                        className: contextLayer
-                                      }, "ContextLayer");
-                          })
-                      }), React.createElement(ContextLayer$ReactHooksTemplate.make, {
-                        contextRef: divRef,
-                        position: /* Bottom */1,
-                        children: (function (param) {
-                            return React.createElement("div", {
-                                        className: contextLayer
-                                      }, "ContextLayer");
-                          })
-                      }), React.createElement(ContextLayer$ReactHooksTemplate.make, {
-                        contextRef: divRef,
-                        position: /* Left */2,
-                        children: (function (param) {
-                            return React.createElement("div", {
-                                        className: contextLayer
-                                      }, "ContextLayer");
-                          })
-                      }), React.createElement(ContextLayer$ReactHooksTemplate.make, {
-                        contextRef: divRef,
-                        position: /* Right */3,
-                        children: (function (param) {
-                            return React.createElement("div", {
-                                        className: contextLayer
-                                      }, "ContextLayer");
-                          })
-                      })) : null);
-}
-
-var ContextLayerExample = /* module */[/* make */App$ContextLayerExample];
-
-var options = /* array */[
-  /* record */[/* label */"FB"],
-  /* record */[/* label */"GOOGL"]
-];
-
-function App$SelectExample(Props) {
-  var getOptions = function (value) {
-    var lowercaseValue = value.toLowerCase();
-    return options.filter((function (option) {
-                  return option[/* label */0].toLowerCase().startsWith(lowercaseValue);
-                }));
-  };
-  return React.createElement(Select$ReactHooksTemplate.make, {
-              getOptions: getOptions
-            });
-}
-
-var SelectExample = /* module */[
-  /* options */options,
-  /* make */App$SelectExample
-];
-
-function App$ModalExample(Props) {
-  var match = React.useState((function () {
-          return false;
-        }));
-  var setShowModal = match[1];
-  var match$1 = React.useState((function () {
-          return 1;
-        }));
-  var setCount = match$1[1];
-  var count = match$1[0];
-  var renderModal = React.useCallback((function (param) {
-          return React.createElement(Modal$ReactHooksTemplate.root, {
-                      children: null
-                    }, React.createElement(Text$ReactHooksTemplate.body, {
-                          children: "Modal"
-                        }), React.createElement("div", undefined, React.createElement(Button$ReactHooksTemplate.make, {
-                              children: String(count),
-                              onClick: (function (param) {
-                                  return Curry._1(setCount, (function (count) {
-                                                return count + 1 | 0;
-                                              }));
-                                })
-                            })), React.createElement(Button$ReactHooksTemplate.make, {
-                          children: "Hide",
-                          onClick: (function (param) {
-                              return Curry._1(setShowModal, (function (param) {
-                                            return false;
-                                          }));
-                            })
-                        }));
-        }), /* array */[count]);
-  var onCloseRequest = React.useCallback((function (param) {
-          return Curry._1(setShowModal, (function (param) {
-                        return false;
-                      }));
-        }), ([]));
-  return React.createElement(React.Fragment, undefined, React.createElement(Button$ReactHooksTemplate.make, {
-                  children: "Show modal",
-                  onClick: (function (param) {
-                      return Curry._1(setShowModal, (function (param) {
-                                    return true;
-                                  }));
-                    })
-                }), match[0] ? React.createElement(Modal$ReactHooksTemplate.make, {
-                    renderModal: renderModal,
-                    onCloseRequest: onCloseRequest
-                  }) : null);
-}
-
-var ModalExample = /* module */[/* make */App$ModalExample];
 
 function App(Props) {
   return React.createElement(Layer$ReactHooksTemplate.provider, {
@@ -293,7 +160,7 @@ function App(Props) {
                       className: section
                     }, React.createElement(Text$ReactHooksTemplate.header, {
                           children: "ContextLayer"
-                        }), React.createElement(App$ContextLayerExample, { })), React.createElement("div", {
+                        }), React.createElement(ContextLayerExample$ReactHooksTemplate.make, { })), React.createElement("div", {
                       className: section
                     }, React.createElement(Text$ReactHooksTemplate.header, {
                           children: "Tooltip"
@@ -311,19 +178,16 @@ function App(Props) {
                       className: section
                     }, React.createElement(Text$ReactHooksTemplate.header, {
                           children: "Select"
-                        }), React.createElement(App$SelectExample, { })), React.createElement("div", {
+                        }), React.createElement(SelectExample$ReactHooksTemplate.make, { })), React.createElement("div", {
                       className: section
                     }, React.createElement(Text$ReactHooksTemplate.header, {
                           children: "Modal"
-                        }), React.createElement(App$ModalExample, { }))), React.createElement(Modals$ReactHooksTemplate.make, { }), React.createElement(Layer$ReactHooksTemplate.container, { }));
+                        }), React.createElement(ModalExample$ReactHooksTemplate.make, { }))), React.createElement(Modals$ReactHooksTemplate.make, { }), React.createElement(Layer$ReactHooksTemplate.container, { }));
 }
 
 var make = App;
 
 exports.Styles = Styles;
 exports.repeatElement = repeatElement;
-exports.ContextLayerExample = ContextLayerExample;
-exports.SelectExample = SelectExample;
-exports.ModalExample = ModalExample;
 exports.make = make;
 /* root Not a pure module */

@@ -15,7 +15,6 @@ module Styles = {
     margin-bottom: 16px;
   |}]);
   let gridCell = style([backgroundColor(`hex(Colors.primary475))]);
-  let contextLayer = style([backgroundColor(`hex(Colors.primary475))]);
 };
 
 let repeatElement = (num: int, render) => {
@@ -24,102 +23,6 @@ let repeatElement = (num: int, render) => {
     Js.Array.push(render(i), rv) |> ignore;
   };
   rv;
-};
-
-module ContextLayerExample = {
-  [@react.component]
-  let make = () => {
-    let (showLayer, setShowLayer) = React.useState(() => false);
-    let divRef = React.useRef(Js.Nullable.null);
-    React.useEffect0(() => {
-      setShowLayer(_ => true);
-      None;
-    });
-    <>
-      <div ref={ReactDOMRe.Ref.domRef(divRef)}>
-        {React.string("Context")}
-      </div>
-      {showLayer
-         ? <>
-             <ContextLayer position=ContextLayer.Top contextRef=divRef>
-               {(~position as _) =>
-                  <div className=Styles.contextLayer>
-                    {React.string("ContextLayer")}
-                  </div>}
-             </ContextLayer>
-             <ContextLayer position=ContextLayer.Bottom contextRef=divRef>
-               {(~position as _) =>
-                  <div className=Styles.contextLayer>
-                    {React.string("ContextLayer")}
-                  </div>}
-             </ContextLayer>
-             <ContextLayer position=ContextLayer.Left contextRef=divRef>
-               {(~position as _) =>
-                  <div className=Styles.contextLayer>
-                    {React.string("ContextLayer")}
-                  </div>}
-             </ContextLayer>
-             <ContextLayer position=ContextLayer.Right contextRef=divRef>
-               {(~position as _) =>
-                  <div className=Styles.contextLayer>
-                    {React.string("ContextLayer")}
-                  </div>}
-             </ContextLayer>
-           </>
-         : React.null}
-    </>;
-  };
-};
-
-module SelectExample = {
-  let options: array(Select.option) = [|{label: "FB"}, {label: "GOOGL"}|];
-
-  [@react.component]
-  let make = () => {
-    let getOptions = value => {
-      let lowercaseValue = Js.String.toLowerCase(value);
-      Js.Array.filter(
-        (option: Select.option) =>
-          Js.String.startsWith(
-            lowercaseValue,
-            Js.String.toLowerCase(option.label),
-          ),
-        options,
-      );
-    };
-    <Select getOptions />;
-  };
-};
-
-module ModalExample = {
-  [@react.component]
-  let make = () => {
-    let (showModal, setShowModal) = React.useState(() => false);
-    let (count, setCount) = React.useState(() => 1);
-    let renderModal =
-      React.useCallback1(
-        () =>
-          <Modal.root>
-            <Text.body> {React.string("Modal")} </Text.body>
-            <div>
-              <Button onClick={_ => setCount(count => count + 1)}>
-                {React.string(string_of_int(count))}
-              </Button>
-            </div>
-            <Button onClick={_ => setShowModal(_ => false)}>
-              {React.string("Hide")}
-            </Button>
-          </Modal.root>,
-        [|count|],
-      );
-    let onCloseRequest = React.useCallback0(() => setShowModal(_ => false));
-    <>
-      <Button onClick={_ => setShowModal(_ => true)}>
-        {React.string("Show modal")}
-      </Button>
-      {showModal ? <Modal renderModal onCloseRequest /> : React.null}
-    </>;
-  };
 };
 
 [@react.component]
