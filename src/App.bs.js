@@ -4,6 +4,7 @@
 var Css = require("bs-css/src/Css.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
+var Card$ReactHooksTemplate = require("./components/Card.bs.js");
 var Grid$ReactHooksTemplate = require("./components/Grid.bs.js");
 var Text$ReactHooksTemplate = require("./components/Text.bs.js");
 var Layer$ReactHooksTemplate = require("./components/layer/Layer.bs.js");
@@ -192,7 +193,31 @@ function App(Props) {
                             className: section
                           }, React.createElement(Text$ReactHooksTemplate.header, {
                                 children: "Modal"
-                              }), React.createElement(ModalExample$ReactHooksTemplate.make, { }))), React.createElement(Modals$ReactHooksTemplate.make, { }), React.createElement(Layer$ReactHooksTemplate.container, { }))
+                              }), React.createElement(ModalExample$ReactHooksTemplate.make, { })), React.createElement("div", {
+                            className: section
+                          }, React.createElement(Text$ReactHooksTemplate.header, {
+                                children: "Card"
+                              }), React.createElement(Grid$ReactHooksTemplate.row, {
+                                children: null
+                              }, React.createElement(Grid$ReactHooksTemplate.cell, {
+                                    span: 6,
+                                    children: React.createElement(Card$ReactHooksTemplate.make, {
+                                          children: null
+                                        }, React.createElement(Text$ReactHooksTemplate.smallBodyBold, {
+                                              children: "ReasonReact"
+                                            }), React.createElement(Text$ReactHooksTemplate.smallBody, {
+                                              children: "ReasonReact uses functions and React Hooks to compose the component of your application. Let's look at how a component is written and then break down some of the things happening."
+                                            }))
+                                  }), React.createElement(Grid$ReactHooksTemplate.cell, {
+                                    span: 6,
+                                    children: React.createElement(Card$ReactHooksTemplate.make, {
+                                          children: null
+                                        }, React.createElement(Text$ReactHooksTemplate.smallBodyBold, {
+                                              children: "What & Why"
+                                            }), React.createElement(Text$ReactHooksTemplate.smallBody, {
+                                              children: null
+                                            }, "By leveraging the latter's great type system, expressive language features and smooth interoperability with JS, ReasonReact packs ReactJS' features into an API that is:", React.createElement("ul", undefined, React.createElement("li", undefined, "Safe and statically typed"), React.createElement("li", undefined, "Simple and lean"), React.createElement("li", undefined, "Familiar and easy to insert into an existing ReactJS codebase"), React.createElement("li", undefined, "Well thought-out (made by the creator of ReactJS himself!)"))))
+                                  })))), React.createElement(Modals$ReactHooksTemplate.make, { }), React.createElement(Layer$ReactHooksTemplate.container, { }))
             });
 }
 

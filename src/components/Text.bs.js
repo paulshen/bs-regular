@@ -6,6 +6,31 @@ var Css = require("bs-css/src/Css.js");
 var React = require("react");
 var Colors$ReactHooksTemplate = require("./theme/Colors.bs.js");
 
+var smallBody = Css.style(/* :: */[
+      Css.color(/* `hex */[
+            5194459,
+            Colors$ReactHooksTemplate.primary100
+          ]),
+      /* :: */[
+        Css.fontSize(/* `px */[
+              25096,
+              13
+            ]),
+        /* :: */[
+          Css.lineHeight(Css.px(18)),
+          /* [] */0
+        ]
+      ]
+    ]);
+
+var smallBodyBold = Css.style(/* :: */[
+      Css.fontWeight(/* `num */[
+            5496390,
+            700
+          ]),
+      /* [] */0
+    ]);
+
 var body = Css.style(/* :: */[
       Css.color(/* `hex */[
             5194459,
@@ -85,10 +110,43 @@ var smallHeader = Css.style(/* :: */[
     ]);
 
 var Styles = /* module */[
+  /* smallBody */smallBody,
+  /* smallBodyBold */smallBodyBold,
   /* body */body,
   /* header */header,
   /* smallHeader */smallHeader
 ];
+
+function Text$smallBody(Props) {
+  var children = Props.children;
+  var className = Props.className;
+  return React.createElement("div", {
+              className: Cn.make(/* :: */[
+                    smallBody,
+                    /* :: */[
+                      Cn.unpack(className),
+                      /* [] */0
+                    ]
+                  ])
+            }, children);
+}
+
+function Text$smallBodyBold(Props) {
+  var children = Props.children;
+  var className = Props.className;
+  return React.createElement("div", {
+              className: Cn.make(/* :: */[
+                    smallBody,
+                    /* :: */[
+                      smallBodyBold,
+                      /* :: */[
+                        Cn.unpack(className),
+                        /* [] */0
+                      ]
+                    ]
+                  ])
+            }, children);
+}
 
 function Text$body(Props) {
   var children = Props.children;
@@ -132,6 +190,10 @@ function Text$smallHeader(Props) {
             }, children);
 }
 
+var smallBody$1 = Text$smallBody;
+
+var smallBodyBold$1 = Text$smallBodyBold;
+
 var body$1 = Text$body;
 
 var header$1 = Text$header;
@@ -139,7 +201,9 @@ var header$1 = Text$header;
 var smallHeader$1 = Text$smallHeader;
 
 exports.Styles = Styles;
+exports.smallBody = smallBody$1;
+exports.smallBodyBold = smallBodyBold$1;
 exports.body = body$1;
 exports.header = header$1;
 exports.smallHeader = smallHeader$1;
-/* body Not a pure module */
+/* smallBody Not a pure module */

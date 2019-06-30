@@ -1,5 +1,12 @@
 module Styles = {
   open Css;
+  let smallBody =
+    style([
+      color(`hex(Colors.primary100)),
+      fontSize(`px(13)),
+      lineHeight(px(18)),
+    ]);
+  let smallBodyBold = style([fontWeight(`num(700))]);
   let body =
     style([
       color(`hex(Colors.primary100)),
@@ -23,6 +30,23 @@ module Styles = {
       textTransform(`uppercase),
     ]);
 };
+
+[@react.component]
+let smallBody = (~children, ~className=?) =>
+  <div className={Cn.make([Styles.smallBody, Cn.unpack(className)])}>
+    children
+  </div>;
+
+[@react.component]
+let smallBodyBold = (~children, ~className=?) =>
+  <div
+    className={Cn.make([
+      Styles.smallBody,
+      Styles.smallBodyBold,
+      Cn.unpack(className),
+    ])}>
+    children
+  </div>;
 
 [@react.component]
 let body = (~children, ~className=?) =>

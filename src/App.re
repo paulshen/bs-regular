@@ -117,6 +117,49 @@ let make = () => {
           <Text.header> {React.string("Modal")} </Text.header>
           <ModalExample />
         </div>
+        <div className=Styles.section>
+          <Text.header> {React.string("Card")} </Text.header>
+          <Grid.row>
+            <Grid.cell span=6>
+              <Card>
+                <Text.smallBodyBold>
+                  {React.string("ReasonReact")}
+                </Text.smallBodyBold>
+                <Text.smallBody>
+                  {React.string(
+                     "ReasonReact uses functions and React Hooks to compose the component of your application. Let's look at how a component is written and then break down some of the things happening.",
+                   )}
+                </Text.smallBody>
+              </Card>
+            </Grid.cell>
+            <Grid.cell span=6>
+              <Card>
+                <Text.smallBodyBold>
+                  {React.string("What & Why")}
+                </Text.smallBodyBold>
+                <Text.smallBody>
+                  {React.string(
+                     "By leveraging the latter's great type system, expressive language features and smooth interoperability with JS, ReasonReact packs ReactJS' features into an API that is:",
+                   )}
+                  <ul>
+                    <li> {React.string("Safe and statically typed")} </li>
+                    <li> {React.string("Simple and lean")} </li>
+                    <li>
+                      {React.string(
+                         "Familiar and easy to insert into an existing ReactJS codebase",
+                       )}
+                    </li>
+                    <li>
+                      {React.string(
+                         "Well thought-out (made by the creator of ReactJS himself!)",
+                       )}
+                    </li>
+                  </ul>
+                </Text.smallBody>
+              </Card>
+            </Grid.cell>
+          </Grid.row>
+        </div>
       </div>
       <Modals />
       <Layer.container />
