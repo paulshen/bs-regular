@@ -18,6 +18,8 @@ var primary490 = "f8f8f8";
 
 var primary500 = "ffffff";
 
+var pink = "fce6da";
+
 exports.primary100 = primary100;
 exports.primary200 = primary200;
 exports.primary300 = primary300;
@@ -26,4 +28,5 @@ exports.primary450 = primary450;
 exports.primary475 = primary475;
 exports.primary490 = primary490;
 exports.primary500 = primary500;
+exports.pink = pink;
 /* No side effect */

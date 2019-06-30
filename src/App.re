@@ -16,6 +16,8 @@ module Styles = {
     margin-bottom: 16px;
   |}]);
   let gridCell = style([backgroundColor(`hex(Colors.primary475))]);
+
+  let cardPink = style([backgroundColor(`hex(Colors.pink))]);
 };
 
 let repeatElement = (num: int, render) => {
@@ -121,7 +123,7 @@ let make = () => {
           <Text.header> {React.string("Card")} </Text.header>
           <Grid.row>
             <Grid.cell span=6>
-              <Card>
+              <Card className=Styles.cardPink>
                 <Text.smallBodyBold>
                   {React.string("ReasonReact")}
                 </Text.smallBodyBold>

@@ -58,13 +58,22 @@ var gridCell = Css.style(/* :: */[
       /* [] */0
     ]);
 
+var cardPink = Css.style(/* :: */[
+      Css.backgroundColor(/* `hex */[
+            5194459,
+            Colors$ReactHooksTemplate.pink
+          ]),
+      /* [] */0
+    ]);
+
 var Styles = /* module */[
   /* container */container,
   /* root */root,
   /* button */button,
   /* section */section,
   /* gridRow */gridRow,
-  /* gridCell */gridCell
+  /* gridCell */gridCell,
+  /* cardPink */cardPink
 ];
 
 function repeatElement(num, render) {
@@ -202,7 +211,8 @@ function App(Props) {
                               }, React.createElement(Grid$ReactHooksTemplate.cell, {
                                     span: 6,
                                     children: React.createElement(Card$ReactHooksTemplate.make, {
-                                          children: null
+                                          children: null,
+                                          className: cardPink
                                         }, React.createElement(Text$ReactHooksTemplate.smallBodyBold, {
                                               children: "ReasonReact"
                                             }), React.createElement(Text$ReactHooksTemplate.smallBody, {
