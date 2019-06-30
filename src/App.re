@@ -89,14 +89,7 @@ let make = () => {
         </div>
         <div className=Styles.section>
           <Text.header> {React.string("Inputs")} </Text.header>
-          <Grid.row className=Spacing.marginBottom16>
-            <Grid.cell span=6>
-              <TextInput label="First name" placeholder="Harry" />
-            </Grid.cell>
-            <Grid.cell span=6>
-              <TextInput label="Last name" placeholder="Potter" />
-            </Grid.cell>
-          </Grid.row>
+          <FormExample />
         </div>
         <div className=Styles.section>
           <Text.header> {React.string("ContextLayer")} </Text.header>

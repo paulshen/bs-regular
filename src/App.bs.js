@@ -12,9 +12,8 @@ var Button$ReactHooksTemplate = require("./components/Button.bs.js");
 var Colors$ReactHooksTemplate = require("./components/theme/Colors.bs.js");
 var Modals$ReactHooksTemplate = require("./components/modal/Modals.bs.js");
 var Divider$ReactHooksTemplate = require("./components/Divider.bs.js");
-var Spacing$ReactHooksTemplate = require("./components/theme/Spacing.bs.js");
 var Tooltip$ReactHooksTemplate = require("./components/Tooltip.bs.js");
-var TextInput$ReactHooksTemplate = require("./components/inputs/TextInput.bs.js");
+var FormExample$ReactHooksTemplate = require("./examples/FormExample.bs.js");
 var ModalExample$ReactHooksTemplate = require("./examples/ModalExample.bs.js");
 var SelectExample$ReactHooksTemplate = require("./examples/SelectExample.bs.js");
 var ContextLayerExample$ReactHooksTemplate = require("./examples/ContextLayerExample.bs.js");
@@ -161,22 +160,7 @@ function App(Props) {
                             className: section
                           }, React.createElement(Text$ReactHooksTemplate.header, {
                                 children: "Inputs"
-                              }), React.createElement(Grid$ReactHooksTemplate.row, {
-                                className: Spacing$ReactHooksTemplate.marginBottom16,
-                                children: null
-                              }, React.createElement(Grid$ReactHooksTemplate.cell, {
-                                    span: 6,
-                                    children: React.createElement(TextInput$ReactHooksTemplate.make, {
-                                          label: "First name",
-                                          placeholder: "Harry"
-                                        })
-                                  }), React.createElement(Grid$ReactHooksTemplate.cell, {
-                                    span: 6,
-                                    children: React.createElement(TextInput$ReactHooksTemplate.make, {
-                                          label: "Last name",
-                                          placeholder: "Potter"
-                                        })
-                                  }))), React.createElement("div", {
+                              }), React.createElement(FormExample$ReactHooksTemplate.make, { })), React.createElement("div", {
                             className: section
                           }, React.createElement(Text$ReactHooksTemplate.header, {
                                 children: "ContextLayer"

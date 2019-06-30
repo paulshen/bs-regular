@@ -17,7 +17,11 @@ function SelectExample(Props) {
                 }));
   };
   return React.createElement(Select$ReactHooksTemplate.make, {
-              getOptions: getOptions
+              getOptions: getOptions,
+              selectedOption: undefined,
+              onChange: (function (param) {
+                  return /* () */0;
+                })
             });
 }
 

@@ -13,5 +13,5 @@ let make = () => {
       options,
     );
   };
-  <Select getOptions />;
+  <Select getOptions selectedOption=None onChange={_ => ()} />;
 };
