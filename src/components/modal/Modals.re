@@ -74,13 +74,31 @@ let make = () => {
   React.useLayoutEffect0(() => {
     let callback = () => forceUpdate(x => x + 1);
     subscriptions := Js.Array.concat(subscriptions^, [|callback|]);
+    open Webapi.Dom;
+    let onKeyPress = (e: KeyboardEvent.t) => {
+      switch (KeyboardEvent.key(e)) {
+      | "Esc"
+      | "Escape" =>
+        if (Js.Array.length(modals^) > 0) {
+          let {onCloseRequest} = modals^[Js.Array.length(modals^) - 1];
+          switch (onCloseRequest) {
+          | Some(onCloseRequest) => onCloseRequest()
+          | None => ()
+          };
+        }
+      | _ => ()
+      };
+    };
+    window |> Window.addKeyDownEventListener(onKeyPress);
     Some(
-      () =>
+      () => {
         subscriptions :=
           Js.Array.filter(
             subscription => subscription != callback,
             subscriptions^,
-          ),
+          );
+        Window.removeKeyDownEventListener(onKeyPress) |> ignore;
+      },
     );
   });
 

@@ -5,6 +5,7 @@ var Css = require("bs-css/src/Css.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
+var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var Layer$ReactHooksTemplate = require("../layer/Layer.bs.js");
@@ -144,6 +145,33 @@ function Modals(Props) {
                         }));
           };
           subscriptions[0] = /* array */[callback].concat(subscriptions[0]);
+          var onKeyPress = function (e) {
+            var match = e.key;
+            var exit = 0;
+            switch (match) {
+              case "Esc" : 
+              case "Escape" : 
+                  exit = 1;
+                  break;
+              default:
+                return /* () */0;
+            }
+            if (exit === 1) {
+              if (modals[0].length > 0) {
+                var match$1 = Caml_array.caml_array_get(modals[0], modals[0].length - 1 | 0);
+                var onCloseRequest = match$1[/* onCloseRequest */2];
+                if (onCloseRequest !== undefined) {
+                  return Curry._1(onCloseRequest, /* () */0);
+                } else {
+                  return /* () */0;
+                }
+              } else {
+                return 0;
+              }
+            }
+            
+          };
+          window.addEventListener("keydown", onKeyPress);
           return (function (param) {
                     subscriptions[0] = subscriptions[0].filter((function (subscription) {
                             return Caml_obj.caml_notequal(subscription, callback);
