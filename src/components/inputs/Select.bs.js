@@ -93,6 +93,16 @@ function Select$SelectOptions(Props) {
   var onSelect = Props.onSelect;
   var onMouseDown = Props.onMouseDown;
   var contextRef = Props.contextRef;
+  var onKeyPress = function (e) {
+    var match = e.key;
+    switch (match) {
+      case "Esc" : 
+      case "Escape" : 
+          return Curry._1(onSelect, undefined);
+      default:
+        return /* () */0;
+    }
+  };
   return React.createElement(ContextLayer$ReactHooksTemplate.make, {
               contextRef: contextRef,
               position: /* Bottom */1,
@@ -116,7 +126,8 @@ function Select$SelectOptions(Props) {
                                                 key: String(i)
                                               });
                                   })));
-                })
+                }),
+              onKeyPress: onKeyPress
             });
 }
 
@@ -137,7 +148,7 @@ function Select(Props) {
   var match$1 = React.useState((function () {
           return false;
         }));
-  var setFocused = match$1[1];
+  var setShowOptions = match$1[1];
   React.useEffect((function () {
           if (selectedOption !== undefined) {
             var selectedOption$1 = selectedOption;
@@ -153,14 +164,17 @@ function Select(Props) {
         }), /* array */[selectedOption]);
   var onInputChange = React.useCallback((function (e) {
           var value = e.currentTarget.value;
-          return Curry._1(setTextValue, (function (param) {
-                        return value;
+          Curry._1(setTextValue, (function (param) {
+                  return value;
+                }));
+          return Curry._1(setShowOptions, (function (param) {
+                        return true;
                       }));
         }), ([]));
   var blurTimeout = React.useRef(undefined);
   var onBlur = React.useCallback((function (param) {
           blurTimeout.current = Caml_option.some(setTimeout((function (param) {
-                      return Curry._1(setFocused, (function (param) {
+                      return Curry._1(setShowOptions, (function (param) {
                                     return false;
                                   }));
                     }), 100));
@@ -172,16 +186,16 @@ function Select(Props) {
       clearTimeout(Caml_option.valFromOption(match));
       blurTimeout.current = undefined;
     }
-    return Curry._1(setFocused, (function (param) {
+    return Curry._1(setShowOptions, (function (param) {
                   return true;
                 }));
   };
   var onMouseDown = React.useCallback(onFocus, ([]));
   var onSelect = function (option) {
-    Curry._1(setFocused, (function (param) {
+    Curry._1(setShowOptions, (function (param) {
             return false;
           }));
-    if (onChange !== undefined) {
+    if (option !== undefined && onChange !== undefined) {
       return Curry._1(onChange, option);
     } else {
       return /* () */0;

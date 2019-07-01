@@ -5,7 +5,6 @@ var Css = require("bs-css/src/Css.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
-var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var Layer$ReactHooksTemplate = require("../layer/Layer.bs.js");
@@ -93,11 +92,11 @@ var subscriptions = /* record */[/* contents : array */[]];
 
 function openModal(renderModal, onCloseRequest) {
   var modalKey = String(nextModalKey[0]);
-  modals[0] = /* array */[/* record */[
-        /* modalKey */modalKey,
-        /* renderModal */renderModal,
-        /* onCloseRequest */onCloseRequest
-      ]].concat(modals[0]);
+  modals[0] = modals[0].concat(/* array */[/* record */[
+          /* modalKey */modalKey,
+          /* renderModal */renderModal,
+          /* onCloseRequest */onCloseRequest
+        ]]);
   subscriptions[0].forEach((function (subscription) {
           return Curry._1(subscription, /* () */0);
         }));
@@ -145,33 +144,6 @@ function Modals(Props) {
                         }));
           };
           subscriptions[0] = /* array */[callback].concat(subscriptions[0]);
-          var onKeyPress = function (e) {
-            var match = e.key;
-            var exit = 0;
-            switch (match) {
-              case "Esc" : 
-              case "Escape" : 
-                  exit = 1;
-                  break;
-              default:
-                return /* () */0;
-            }
-            if (exit === 1) {
-              if (modals[0].length > 0) {
-                var match$1 = Caml_array.caml_array_get(modals[0], modals[0].length - 1 | 0);
-                var onCloseRequest = match$1[/* onCloseRequest */2];
-                if (onCloseRequest !== undefined) {
-                  return Curry._1(onCloseRequest, /* () */0);
-                } else {
-                  return /* () */0;
-                }
-              } else {
-                return 0;
-              }
-            }
-            
-          };
-          window.addEventListener("keydown", onKeyPress);
           return (function (param) {
                     subscriptions[0] = subscriptions[0].filter((function (subscription) {
                             return Caml_obj.caml_notequal(subscription, callback);
@@ -194,6 +166,23 @@ function Modals(Props) {
                               children: React.createElement("div", {
                                     className: layer
                                   }, React.createElement(Modals$Backdrop, tmp), Curry._1(modal[/* renderModal */1], /* () */0)),
+                              onKeyPress: (function (param) {
+                                  var param$1 = modal;
+                                  var e = param;
+                                  var onCloseRequest = param$1[/* onCloseRequest */2];
+                                  var match = e.key;
+                                  switch (match) {
+                                    case "Esc" : 
+                                    case "Escape" : 
+                                        if (onCloseRequest !== undefined) {
+                                          return Curry._1(onCloseRequest, /* () */0);
+                                        } else {
+                                          return /* () */0;
+                                        }
+                                    default:
+                                      return /* () */0;
+                                  }
+                                }),
                               key: String(i)
                             });
                 }));

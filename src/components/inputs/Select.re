@@ -31,7 +31,15 @@ module SelectOption = {
 module SelectOptions = {
   [@react.component]
   let make = (~options, ~selectedOption, ~onSelect, ~onMouseDown, ~contextRef) => {
-    <ContextLayer position=ContextLayer.Bottom contextRef>
+    let onKeyPress = (e: Webapi.Dom.KeyboardEvent.t) => {
+      switch (Webapi.Dom.KeyboardEvent.key(e)) {
+      | "Esc"
+      | "Escape" => onSelect(None)
+      | _ => ()
+      };
+    };
+
+    <ContextLayer position=ContextLayer.Bottom contextRef onKeyPress>
       {(~position as _) => {
          let inputElement =
            Belt.Option.getExn(
@@ -56,7 +64,7 @@ module SelectOptions = {
                   <SelectOption
                     option
                     isSelected
-                    onClick={_ => onSelect(option)}
+                    onClick={_ => onSelect(Some(option))}
                     key={string_of_int(i)}
                   />;
                 },
@@ -74,7 +82,7 @@ let make =
     (~getOptions, ~selectedOption, ~onChange=?, ~label=?, ~placeholder=?, ()) => {
   let inputRef = React.useRef(Js.Nullable.null);
   let (textValue, setTextValue) = React.useState(() => "");
-  let (focused, setFocused) = React.useState(() => false);
+  let (showOptions, setShowOptions) = React.useState(() => false);
 
   React.useEffect1(
     () => {
@@ -91,13 +99,14 @@ let make =
     React.useCallback0(e => {
       let value: string = ReactEvent.Form.currentTarget(e)##value;
       setTextValue(_ => value);
+      setShowOptions(_ => true);
     });
   let blurTimeout = React.useRef(None);
   let onBlur =
     React.useCallback0(_ =>
       React.Ref.setCurrent(
         blurTimeout,
-        Some(Js.Global.setTimeout(() => setFocused(_ => false), 100)),
+        Some(Js.Global.setTimeout(() => setShowOptions(_ => false), 100)),
       )
     );
   let onFocus = _ => {
@@ -107,13 +116,17 @@ let make =
       React.Ref.setCurrent(blurTimeout, None);
     | None => ()
     };
-    setFocused(_ => true);
+    setShowOptions(_ => true);
   };
   let onMouseDown = React.useCallback0(onFocus);
   let onSelect = option => {
-    setFocused(_ => false);
-    switch (onChange) {
-    | Some(onChange) => onChange(option)
+    setShowOptions(_ => false);
+    switch (option) {
+    | Some(option) =>
+      switch (onChange) {
+      | Some(onChange) => onChange(option)
+      | None => ()
+      }
     | None => ()
     };
   };
@@ -125,7 +138,7 @@ let make =
       ?placeholder
       ref=inputRef
     />
-    {String.length(textValue) > 0 && focused
+    {String.length(textValue) > 0 && showOptions
        ? {
          let options = getOptions(textValue);
          Array.length(options) > 0

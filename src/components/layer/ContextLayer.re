@@ -44,6 +44,7 @@ let make =
       ~contextRef: React.Ref.t(Js.Nullable.t(Dom.element))=?,
       ~position=Top,
       ~children: (~position: position) => React.element,
+      ~onKeyPress=?,
     ) => {
   let (anchor, setAnchor) = React.useState(() => None);
   let divRef = React.useRef(Js.Nullable.null);
@@ -84,7 +85,7 @@ let make =
       | TopLeft(_, _) => ReactDOMRe.Style.make(~top="0", ~left="0", ())
       | TopRight(_, _) => ReactDOMRe.Style.make(~top="0", ~right="0", ()),
     );
-  <Layer>
+  <Layer ?onKeyPress>
     <div
       ref={ReactDOMRe.Ref.domRef(divRef)}
       className=Styles.layer

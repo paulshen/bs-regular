@@ -43,7 +43,7 @@ let subscriptions: ref(array(unit => unit)) = ref([||]);
 let openModal = (~renderModal, ~onCloseRequest) => {
   let modalKey = string_of_int(nextModalKey^);
   modals :=
-    Js.Array.concat(modals^, [|{modalKey, renderModal, onCloseRequest}|]);
+    Js.Array.concat([|{modalKey, renderModal, onCloseRequest}|], modals^);
   subscriptions^ |> Js.Array.forEach(subscription => subscription());
   nextModalKey := nextModalKey^ + 1;
   modalKey;
@@ -74,33 +74,27 @@ let make = () => {
   React.useLayoutEffect0(() => {
     let callback = () => forceUpdate(x => x + 1);
     subscriptions := Js.Array.concat(subscriptions^, [|callback|]);
-    open Webapi.Dom;
-    let onKeyPress = (e: KeyboardEvent.t) => {
-      switch (KeyboardEvent.key(e)) {
-      | "Esc"
-      | "Escape" =>
-        if (Js.Array.length(modals^) > 0) {
-          let {onCloseRequest} = modals^[Js.Array.length(modals^) - 1];
-          switch (onCloseRequest) {
-          | Some(onCloseRequest) => onCloseRequest()
-          | None => ()
-          };
-        }
-      | _ => ()
-      };
-    };
-    window |> Window.addKeyDownEventListener(onKeyPress);
     Some(
-      () => {
+      () =>
         subscriptions :=
           Js.Array.filter(
             subscription => subscription != callback,
             subscriptions^,
-          );
-        Window.removeKeyDownEventListener(onKeyPress) |> ignore;
-      },
+          ),
     );
   });
+
+  let onKeyPress = ({onCloseRequest}, e) => {
+    switch (Webapi.Dom.KeyboardEvent.key(e)) {
+    | "Esc"
+    | "Escape" =>
+      switch (onCloseRequest) {
+      | Some(onCloseRequest) => onCloseRequest()
+      | None => ()
+      }
+    | _ => ()
+    };
+  };
 
   if (Js.Array.length(modals^) == 0) {
     React.null;
@@ -108,7 +102,7 @@ let make = () => {
     React.array(
       Js.Array.mapi(
         (modal, i) =>
-          <Layer key={string_of_int(i)}>
+          <Layer key={string_of_int(i)} onKeyPress={onKeyPress(modal)}>
             <div className=Styles.layer>
               <Backdrop
                 onClick=?{

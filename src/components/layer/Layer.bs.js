@@ -5,6 +5,7 @@ var Css = require("bs-css/src/Css.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var ReactDom = require("react-dom");
+var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 
@@ -48,9 +49,23 @@ var ContextProvider = /* module */[
   /* make */make
 ];
 
+var layers = /* record */[/* contents : array */[]];
+
 function Layer(Props) {
   var children = Props.children;
+  var onKeyPress = Props.onKeyPress;
   var layerContainer = Belt_Option.getExn(React.useContext(context)[/* container */0]);
+  var layer = React.useRef(/* record */[/* onKeyPress */onKeyPress]);
+  layer.current = /* record */[/* onKeyPress */onKeyPress];
+  React.useLayoutEffect((function () {
+          layers[0] = layers[0].concat(/* array */[layer]);
+          return (function (param) {
+                    layers[0] = layers[0].filter((function (l) {
+                            return l === layer;
+                          }));
+                    return /* () */0;
+                  });
+        }), ([]));
   return ReactDom.createPortal(children, layerContainer);
 }
 
@@ -77,7 +92,23 @@ function Layer$container(Props) {
   React.useLayoutEffect((function () {
           var element = Belt_Option.getExn(Caml_option.nullable_to_opt(domRef.current));
           Curry._1(setContainer, element);
-          return undefined;
+          var onKeyPress = function (e) {
+            if (layers[0].length > 0) {
+              var match = Caml_array.caml_array_get(layers[0], layers[0].length - 1 | 0).current;
+              var onKeyPress$1 = match[/* onKeyPress */0];
+              if (onKeyPress$1 !== undefined) {
+                return Curry._1(onKeyPress$1, e);
+              } else {
+                return /* () */0;
+              }
+            } else {
+              return 0;
+            }
+          };
+          window.addEventListener("keydown", onKeyPress);
+          return (function (param) {
+                    return /* () */0;
+                  });
         }), ([]));
   return React.createElement("div", {
               ref: domRef,
@@ -94,6 +125,7 @@ var container$1 = Layer$container;
 exports.Styles = Styles;
 exports.context = context;
 exports.ContextProvider = ContextProvider;
+exports.layers = layers;
 exports.make = make$1;
 exports.provider = provider;
 exports.container = container$1;

@@ -52,6 +52,7 @@ function ContextLayer(Props) {
   var match = Props.position;
   var position = match !== undefined ? match : /* Top */0;
   var children = Props.children;
+  var onKeyPress = Props.onKeyPress;
   var match$1 = React.useState((function () {
           return undefined;
         }));
@@ -113,9 +114,13 @@ function ContextLayer(Props) {
   if (innerStyle !== undefined) {
     tmp$1.style = Caml_option.valFromOption(innerStyle);
   }
-  return React.createElement(Layer$ReactHooksTemplate.make, {
-              children: React.createElement("div", tmp, React.createElement("div", tmp$1, Curry._1(children, position)))
-            });
+  var tmp$2 = {
+    children: React.createElement("div", tmp, React.createElement("div", tmp$1, Curry._1(children, position)))
+  };
+  if (onKeyPress !== undefined) {
+    tmp$2.onKeyPress = Caml_option.valFromOption(onKeyPress);
+  }
+  return React.createElement(Layer$ReactHooksTemplate.make, tmp$2);
 }
 
 var make = ContextLayer;
