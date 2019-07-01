@@ -9,19 +9,21 @@ module Styles = {
       lastChild([borderBottomStyle(`none)]),
     ]);
   let optionSelected = style([backgroundColor(`hex(Colors.primary490))]);
+  let optionFocused = style([textDecoration(`underline)]);
 };
 
 type option = {label: string};
 
 module SelectOption = {
   [@react.component]
-  let make = (~option, ~onClick, ~isSelected) => {
+  let make = (~option, ~onClick, ~isSelected, ~isFocused) => {
     <div
       onClick
       tabIndex=0
       className={Cn.make([
         Styles.option,
         Cn.ifTrue(Styles.optionSelected, isSelected),
+        Cn.ifTrue(Styles.optionFocused, isFocused),
       ])}>
       {React.string(option.label)}
     </div>;
@@ -31,10 +33,19 @@ module SelectOption = {
 module SelectOptions = {
   [@react.component]
   let make = (~options, ~selectedOption, ~onSelect, ~onMouseDown, ~contextRef) => {
+    let (focusedIndex, setFocusedIndex) = React.useState(() => (-1));
     let onKeyPress = (e: Webapi.Dom.KeyboardEvent.t) => {
+      let numOptions = Js.Array.length(options);
       switch (Webapi.Dom.KeyboardEvent.key(e)) {
       | "Esc"
       | "Escape" => onSelect(None)
+      | "ArrowUp" =>
+        setFocusedIndex(i => (i - 1 + numOptions) mod numOptions);
+        Webapi.Dom.KeyboardEvent.preventDefault(e);
+      | "ArrowDown" =>
+        setFocusedIndex(i => (i + 1) mod numOptions);
+        Webapi.Dom.KeyboardEvent.preventDefault(e);
+      | "Enter" => onSelect(Belt.Array.get(options, focusedIndex))
       | _ => ()
       };
     };
@@ -61,9 +72,11 @@ module SelectOptions = {
                     | Some(selectedOption) => selectedOption === option
                     | None => false
                     };
+                  let isFocused = focusedIndex == i;
                   <SelectOption
                     option
                     isSelected
+                    isFocused
                     onClick={_ => onSelect(Some(option))}
                     key={string_of_int(i)}
                   />;

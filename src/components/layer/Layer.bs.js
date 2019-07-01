@@ -61,7 +61,7 @@ function Layer(Props) {
           layers[0] = layers[0].concat(/* array */[layer]);
           return (function (param) {
                     layers[0] = layers[0].filter((function (l) {
-                            return l === layer;
+                            return l !== layer;
                           }));
                     return /* () */0;
                   });

@@ -4,7 +4,6 @@
 var Css = require("bs-css/src/Css.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
-var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
 var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var Layer$ReactHooksTemplate = require("../layer/Layer.bs.js");
@@ -146,7 +145,7 @@ function Modals(Props) {
           subscriptions[0] = /* array */[callback].concat(subscriptions[0]);
           return (function (param) {
                     subscriptions[0] = subscriptions[0].filter((function (subscription) {
-                            return Caml_obj.caml_notequal(subscription, callback);
+                            return subscription !== callback;
                           }));
                     return /* () */0;
                   });

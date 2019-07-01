@@ -34,7 +34,7 @@ let make = (~children, ~onKeyPress=?, ()) => {
   layer->React.Ref.setCurrent({onKeyPress: onKeyPress});
   React.useLayoutEffect0(() => {
     layers := Js.Array.concat([|layer|], layers^);
-    Some(() => layers := Js.Array.filter(l => l === layer, layers^));
+    Some(() => layers := Js.Array.filter(l => l !== layer, layers^));
   });
   ReactDOMRe.createPortal(children, layerContainer);
 };

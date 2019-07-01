@@ -5,6 +5,8 @@ var Cn = require("re-classnames/src/Cn.bs.js");
 var Css = require("bs-css/src/Css.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
+var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
+var Caml_int32 = require("bs-platform/lib/js/caml_int32.js");
 var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var Colors$ReactHooksTemplate = require("../theme/Colors.bs.js");
@@ -62,22 +64,32 @@ var optionSelected = Css.style(/* :: */[
       /* [] */0
     ]);
 
+var optionFocused = Css.style(/* :: */[
+      Css.textDecoration(/* underline */131142924),
+      /* [] */0
+    ]);
+
 var Styles = /* module */[
   /* layer */layer,
   /* option */option,
-  /* optionSelected */optionSelected
+  /* optionSelected */optionSelected,
+  /* optionFocused */optionFocused
 ];
 
 function Select$SelectOption(Props) {
   var option$1 = Props.option;
   var onClick = Props.onClick;
   var isSelected = Props.isSelected;
+  var isFocused = Props.isFocused;
   return React.createElement("div", {
               className: Cn.make(/* :: */[
                     option,
                     /* :: */[
                       Cn.ifTrue(optionSelected, isSelected),
-                      /* [] */0
+                      /* :: */[
+                        Cn.ifTrue(optionFocused, isFocused),
+                        /* [] */0
+                      ]
                     ]
                   ]),
               tabIndex: 0,
@@ -93,9 +105,29 @@ function Select$SelectOptions(Props) {
   var onSelect = Props.onSelect;
   var onMouseDown = Props.onMouseDown;
   var contextRef = Props.contextRef;
+  var match = React.useState((function () {
+          return -1;
+        }));
+  var setFocusedIndex = match[1];
+  var focusedIndex = match[0];
   var onKeyPress = function (e) {
+    var numOptions = options.length;
     var match = e.key;
     switch (match) {
+      case "ArrowDown" : 
+          Curry._1(setFocusedIndex, (function (i) {
+                  return Caml_int32.mod_(i + 1 | 0, numOptions);
+                }));
+          e.preventDefault();
+          return /* () */0;
+      case "ArrowUp" : 
+          Curry._1(setFocusedIndex, (function (i) {
+                  return Caml_int32.mod_((i - 1 | 0) + numOptions | 0, numOptions);
+                }));
+          e.preventDefault();
+          return /* () */0;
+      case "Enter" : 
+          return Curry._1(onSelect, Belt_Array.get(options, focusedIndex));
       case "Esc" : 
       case "Escape" : 
           return Curry._1(onSelect, undefined);
@@ -117,12 +149,14 @@ function Select$SelectOptions(Props) {
                               onMouseDown: onMouseDown
                             }, options.map((function (option, i) {
                                     var isSelected = selectedOption !== undefined ? selectedOption === option : false;
+                                    var isFocused = focusedIndex === i;
                                     return React.createElement(Select$SelectOption, {
                                                 option: option,
                                                 onClick: (function (param) {
                                                     return Curry._1(onSelect, option);
                                                   }),
                                                 isSelected: isSelected,
+                                                isFocused: isFocused,
                                                 key: String(i)
                                               });
                                   })));

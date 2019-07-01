@@ -78,7 +78,7 @@ let make = () => {
       () =>
         subscriptions :=
           Js.Array.filter(
-            subscription => subscription != callback,
+            subscription => subscription !== callback,
             subscriptions^,
           ),
     );
