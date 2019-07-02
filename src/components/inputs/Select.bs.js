@@ -219,13 +219,13 @@ function Select(Props) {
       ]);
   var blurTimeout = React.useRef(undefined);
   var onBlur = React.useCallback((function (param) {
-          if (selectedOption !== undefined) {
-            var selectedOption$1 = selectedOption;
-            Curry._1(setTextValue, (function (param) {
-                    return selectedOption$1[/* label */0];
-                  }));
-          }
           blurTimeout.current = Caml_option.some(setTimeout((function (param) {
+                      if (selectedOption !== undefined) {
+                        var selectedOption$1 = selectedOption;
+                        Curry._1(setTextValue, (function (param) {
+                                return selectedOption$1[/* label */0];
+                              }));
+                      }
                       return Curry._1(setShowOptions, (function (param) {
                                     return false;
                                   }));

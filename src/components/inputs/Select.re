@@ -135,16 +135,23 @@ let make =
   let blurTimeout = React.useRef(None);
   let onBlur =
     React.useCallback1(
-      _ => {
-        switch (selectedOption) {
-        | Some(selectedOption) => setTextValue(_ => selectedOption.label)
-        | None => ()
-        };
+      _ =>
         React.Ref.setCurrent(
           blurTimeout,
-          Some(Js.Global.setTimeout(() => setShowOptions(_ => false), 100)),
-        );
-      },
+          Some(
+            Js.Global.setTimeout(
+              () => {
+                switch (selectedOption) {
+                | Some(selectedOption) =>
+                  setTextValue(_ => selectedOption.label)
+                | None => ()
+                };
+                setShowOptions(_ => false);
+              },
+              100,
+            ),
+          ),
+        ),
       [|selectedOption|],
     );
   let onFocus = _ => {
