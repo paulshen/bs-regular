@@ -163,8 +163,42 @@ var make = React.forwardRef((function (Props, forwardedRef) {
         }
       }));
 
+var $$static = React.forwardRef((function (Props, forwardedRef) {
+        var children = Props.children;
+        var className = Props.className;
+        var label = Props.label;
+        var onClick = Props.onClick;
+        var tmp = {
+          className: Cn.make(/* :: */[
+                input,
+                /* :: */[
+                  Cn.unpack(className),
+                  /* [] */0
+                ]
+              ])
+        };
+        var tmp$1 = Belt_Option.map((forwardedRef == null) ? undefined : Caml_option.some(forwardedRef), (function (prim) {
+                return prim;
+              }));
+        if (tmp$1 !== undefined) {
+          tmp.ref = Caml_option.valFromOption(tmp$1);
+        }
+        if (onClick !== undefined) {
+          tmp.onClick = Caml_option.valFromOption(onClick);
+        }
+        var input$1 = React.createElement("div", tmp, children);
+        if (label !== undefined) {
+          return React.createElement(React.Fragment, undefined, React.createElement(FormLabel$ReactHooksTemplate.make, {
+                          children: label
+                        }), input$1);
+        } else {
+          return input$1;
+        }
+      }));
+
 exports.Styles = Styles;
 exports.nextUniqueId = nextUniqueId;
 exports.getUniqueId = getUniqueId;
 exports.make = make;
+exports.$$static = $$static;
 /* input Not a pure module */

@@ -57,17 +57,17 @@ let states = [|
 |];
 let stateOptions =
   Js.Array.map((state): Select.selectOption => {label: state}, states);
-let getStateOptions = value => {
-  let lowercaseValue = Js.String.toLowerCase(value);
-  Js.Array.filter(
-    (option: Select.selectOption) =>
-      Js.String.startsWith(
-        lowercaseValue,
-        Js.String.toLowerCase(option.label),
-      ),
-    stateOptions,
-  )
-  |> Js.Array.slice(~start=0, ~end_=8);
+let getStateOptions = _value => {
+  // let lowercaseValue = Js.String.toLowerCase(value);
+  // Js.Array.filter(
+  //   (option: Select.selectOption) =>
+  //     Js.String.startsWith(
+  //       lowercaseValue,
+  //       Js.String.toLowerCase(option.label),
+  //     ),
+  //   stateOptions,
+  // )
+  stateOptions |> Js.Array.slice(~start=0, ~end_=8);
 };
 
 [@react.component]
@@ -89,6 +89,7 @@ let make = () => {
           selectedOption=state
           onChange=onStateChange
           placeholder="CA"
+          withTextInput=false
           forceOption=true
         />
       </Grid.cell>

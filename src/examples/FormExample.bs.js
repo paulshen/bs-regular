@@ -77,11 +77,8 @@ var stateOptions = states.map((function (state) {
         return /* record */[/* label */state];
       }));
 
-function getStateOptions(value) {
-  var lowercaseValue = value.toLowerCase();
-  return stateOptions.filter((function (option) {
-                  return option[/* label */0].toLowerCase().startsWith(lowercaseValue);
-                })).slice(0, 8);
+function getStateOptions(_value) {
+  return stateOptions.slice(0, 8);
 }
 
 function FormExample(Props) {
@@ -116,6 +113,7 @@ function FormExample(Props) {
                             onChange: onStateChange,
                             label: "State",
                             placeholder: "CA",
+                            withTextInput: false,
                             forceOption: true
                           })
                     })), React.createElement("div", {

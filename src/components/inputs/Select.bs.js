@@ -173,18 +173,20 @@ function Select(Props) {
   var onChange = Props.onChange;
   var label = Props.label;
   var placeholder = Props.placeholder;
-  var match = Props.forceOption;
-  var forceOption = match !== undefined ? match : false;
+  var match = Props.withTextInput;
+  var withTextInput = match !== undefined ? match : true;
+  var match$1 = Props.forceOption;
+  var forceOption = match$1 !== undefined ? match$1 : false;
   var inputRef = React.useRef(null);
-  var match$1 = React.useState((function () {
+  var match$2 = React.useState((function () {
           return "";
         }));
-  var setTextValue = match$1[1];
-  var textValue = match$1[0];
-  var match$2 = React.useState((function () {
+  var setTextValue = match$2[1];
+  var textValue = match$2[0];
+  var match$3 = React.useState((function () {
           return false;
         }));
-  var setShowOptions = match$2[1];
+  var setShowOptions = match$3[1];
   React.useEffect((function () {
           if (selectedOption !== undefined) {
             var selectedOption$1 = selectedOption;
@@ -278,21 +280,39 @@ function Select(Props) {
         hasSelectedOption,
         onChange
       ]);
-  var tmp = {
-    value: textValue,
-    onChange: onInputChange,
-    ref: inputRef
-  };
-  if (label !== undefined) {
-    tmp.label = Caml_option.valFromOption(label);
+  var tmp;
+  if (withTextInput) {
+    var tmp$1 = {
+      value: textValue,
+      onChange: onInputChange,
+      ref: inputRef
+    };
+    if (label !== undefined) {
+      tmp$1.label = Caml_option.valFromOption(label);
+    }
+    if (placeholder !== undefined) {
+      tmp$1.placeholder = Caml_option.valFromOption(placeholder);
+    }
+    tmp = React.createElement(TextInput$ReactHooksTemplate.make, tmp$1);
+  } else {
+    var tmp$2 = {
+      children: selectedOption !== undefined ? selectedOption[/* label */0] : null,
+      onClick: (function (param) {
+          return Curry._1(setShowOptions, (function (show) {
+                        return !show;
+                      }));
+        }),
+      ref: inputRef
+    };
+    if (label !== undefined) {
+      tmp$2.label = Caml_option.valFromOption(label);
+    }
+    tmp = React.createElement(TextInput$ReactHooksTemplate.$$static, tmp$2);
   }
-  if (placeholder !== undefined) {
-    tmp.placeholder = Caml_option.valFromOption(placeholder);
-  }
-  var tmp$1;
-  if (match$2[0]) {
-    var match$3 = options.length !== 0;
-    tmp$1 = match$3 ? React.createElement(Select$SelectOptions, {
+  var tmp$3;
+  if (match$3[0]) {
+    var match$4 = options.length !== 0;
+    tmp$3 = match$4 ? React.createElement(Select$SelectOptions, {
             options: options,
             selectedOption: selectedOption,
             onSelect: onSelect,
@@ -300,12 +320,12 @@ function Select(Props) {
             contextRef: inputRef
           }) : null;
   } else {
-    tmp$1 = null;
+    tmp$3 = null;
   }
   return React.createElement("div", {
               onFocus: React.useCallback(onFocus, ([])),
               onBlur: onBlur
-            }, React.createElement(TextInput$ReactHooksTemplate.make, tmp), tmp$1);
+            }, tmp, tmp$3);
 }
 
 var make = Select;

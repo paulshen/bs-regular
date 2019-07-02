@@ -66,3 +66,26 @@ let make =
     | None => input
     };
   });
+
+[@react.component]
+let static =
+  React.forwardRef(
+    (~children, ~className=?, ~label=?, ~onClick=?, forwardedRef) => {
+    let input =
+      <div
+        className={Cn.make([Styles.input, Cn.unpack(className)])}
+        ?onClick
+        ref=?{
+          Belt.Option.map(
+            Js.Nullable.toOption(forwardedRef),
+            ReactDOMRe.Ref.domRef,
+          )
+        }>
+        children
+      </div>;
+    switch (label) {
+    | Some(label) =>
+      <> <FormLabel> {React.string(label)} </FormLabel> input </>
+    | None => input
+    };
+  });

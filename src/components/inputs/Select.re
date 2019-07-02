@@ -98,6 +98,7 @@ let make =
       ~onChange=?,
       ~label=?,
       ~placeholder=?,
+      ~withTextInput=true,
       ~forceOption=false,
       (),
     ) => {
@@ -198,13 +199,21 @@ let make =
   );
 
   <div onFocus={React.useCallback0(onFocus)} onBlur>
-    <TextInput
-      value=textValue
-      onChange=onInputChange
-      ?label
-      ?placeholder
-      ref=inputRef
-    />
+    {withTextInput
+       ? <TextInput
+           value=textValue
+           onChange=onInputChange
+           ?label
+           ?placeholder
+           ref=inputRef
+         />
+       : <TextInput.static
+           onClick={_ => setShowOptions(show => !show)} ?label ref=inputRef>
+           {switch (selectedOption) {
+            | Some(selectedOption) => React.string(selectedOption.label)
+            | None => React.null
+            }}
+         </TextInput.static>}
     {showOptions
        ? {
          Array.length(options) > 0
