@@ -56,24 +56,24 @@ let states = [|
   "WY",
 |];
 let stateOptions =
-  Js.Array.map((state): Select.option => {label: state}, states);
+  Js.Array.map((state): Select.selectOption => {label: state}, states);
 let getStateOptions = value => {
   let lowercaseValue = Js.String.toLowerCase(value);
   Js.Array.filter(
-    (option: Select.option) =>
+    (option: Select.selectOption) =>
       Js.String.startsWith(
         lowercaseValue,
         Js.String.toLowerCase(option.label),
       ),
     stateOptions,
-  );
+  )
+  |> Js.Array.slice(~start=0, ~end_=8);
 };
 
 [@react.component]
 let make = () => {
   let (state, setState) = React.useState(() => None);
-  let onStateChange =
-    React.useCallback0(option => setState(_ => Some(option)));
+  let onStateChange = React.useCallback0(option => setState(_ => option));
   <div>
     <div className=Spacing.marginBottom16>
       <TextInput label="Street Address" placeholder="1 Folsom Street" />
@@ -89,6 +89,7 @@ let make = () => {
           selectedOption=state
           onChange=onStateChange
           placeholder="CA"
+          forceOption=true
         />
       </Grid.cell>
     </Grid.row>

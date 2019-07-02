@@ -173,16 +173,18 @@ function Select(Props) {
   var onChange = Props.onChange;
   var label = Props.label;
   var placeholder = Props.placeholder;
+  var match = Props.forceOption;
+  var forceOption = match !== undefined ? match : false;
   var inputRef = React.useRef(null);
-  var match = React.useState((function () {
+  var match$1 = React.useState((function () {
           return "";
         }));
-  var setTextValue = match[1];
-  var textValue = match[0];
-  var match$1 = React.useState((function () {
+  var setTextValue = match$1[1];
+  var textValue = match$1[0];
+  var match$2 = React.useState((function () {
           return false;
         }));
-  var setShowOptions = match$1[1];
+  var setShowOptions = match$2[1];
   React.useEffect((function () {
           if (selectedOption !== undefined) {
             var selectedOption$1 = selectedOption;
@@ -196,24 +198,40 @@ function Select(Props) {
           }
           return undefined;
         }), /* array */[selectedOption]);
+  var hasSelectedOption = Belt_Option.isNone(selectedOption);
   var onInputChange = React.useCallback((function (e) {
           var value = e.currentTarget.value;
           Curry._1(setTextValue, (function (param) {
                   return value;
                 }));
-          return Curry._1(setShowOptions, (function (param) {
-                        return true;
-                      }));
-        }), ([]));
+          Curry._1(setShowOptions, (function (param) {
+                  return true;
+                }));
+          if (!forceOption && hasSelectedOption && onChange !== undefined) {
+            return Curry._1(onChange, undefined);
+          } else {
+            return 0;
+          }
+        }), /* tuple */[
+        forceOption,
+        hasSelectedOption,
+        onChange
+      ]);
   var blurTimeout = React.useRef(undefined);
   var onBlur = React.useCallback((function (param) {
+          if (selectedOption !== undefined) {
+            var selectedOption$1 = selectedOption;
+            Curry._1(setTextValue, (function (param) {
+                    return selectedOption$1[/* label */0];
+                  }));
+          }
           blurTimeout.current = Caml_option.some(setTimeout((function (param) {
                       return Curry._1(setShowOptions, (function (param) {
                                     return false;
                                   }));
                     }), 100));
           return /* () */0;
-        }), ([]));
+        }), /* array */[selectedOption]);
   var onFocus = function (param) {
     var match = blurTimeout.current;
     if (match !== undefined) {
@@ -229,12 +247,37 @@ function Select(Props) {
     Curry._1(setShowOptions, (function (param) {
             return false;
           }));
-    if (option !== undefined && onChange !== undefined) {
-      return Curry._1(onChange, option);
+    if (onChange !== undefined) {
+      var onChange$1 = onChange;
+      if (option !== undefined) {
+        return Curry._1(onChange$1, option);
+      } else if (forceOption) {
+        return 0;
+      } else {
+        return Curry._1(onChange$1, undefined);
+      }
     } else {
       return /* () */0;
     }
   };
+  var options = Curry._1(getOptions, textValue);
+  React.useEffect((function (param) {
+          if (forceOption && Belt_Option.isNone(selectedOption)) {
+            var match = Belt_Array.get(options, 0);
+            if (match !== undefined) {
+              if (onChange !== undefined) {
+                Curry._1(onChange, match);
+              }
+              
+            }
+            
+          }
+          return undefined;
+        }), /* tuple */[
+        forceOption,
+        hasSelectedOption,
+        onChange
+      ]);
   var tmp = {
     value: textValue,
     onChange: onInputChange,
@@ -246,10 +289,8 @@ function Select(Props) {
   if (placeholder !== undefined) {
     tmp.placeholder = Caml_option.valFromOption(placeholder);
   }
-  var match$2 = textValue.length !== 0 && match$1[0];
   var tmp$1;
-  if (match$2) {
-    var options = Curry._1(getOptions, textValue);
+  if (match$2[0]) {
     var match$3 = options.length !== 0;
     tmp$1 = match$3 ? React.createElement(Select$SelectOptions, {
             options: options,

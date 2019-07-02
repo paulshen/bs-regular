@@ -80,8 +80,8 @@ var stateOptions = states.map((function (state) {
 function getStateOptions(value) {
   var lowercaseValue = value.toLowerCase();
   return stateOptions.filter((function (option) {
-                return option[/* label */0].toLowerCase().startsWith(lowercaseValue);
-              }));
+                  return option[/* label */0].toLowerCase().startsWith(lowercaseValue);
+                })).slice(0, 8);
 }
 
 function FormExample(Props) {
@@ -115,7 +115,8 @@ function FormExample(Props) {
                             selectedOption: match[0],
                             onChange: onStateChange,
                             label: "State",
-                            placeholder: "CA"
+                            placeholder: "CA",
+                            forceOption: true
                           })
                     })), React.createElement("div", {
                   className: row

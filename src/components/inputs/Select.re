@@ -12,7 +12,7 @@ module Styles = {
   let optionFocused = style([textDecoration(`underline)]);
 };
 
-type option = {label: string};
+type selectOption = {label: string};
 
 module SelectOption = {
   [@react.component]
@@ -92,7 +92,15 @@ module SelectOptions = {
 
 [@react.component]
 let make =
-    (~getOptions, ~selectedOption, ~onChange=?, ~label=?, ~placeholder=?, ()) => {
+    (
+      ~getOptions,
+      ~selectedOption,
+      ~onChange=?,
+      ~label=?,
+      ~placeholder=?,
+      ~forceOption=false,
+      (),
+    ) => {
   let inputRef = React.useRef(Js.Nullable.null);
   let (textValue, setTextValue) = React.useState(() => "");
   let (showOptions, setShowOptions) = React.useState(() => false);
@@ -108,19 +116,36 @@ let make =
     [|selectedOption|],
   );
 
+  let hasSelectedOption = Belt.Option.isNone(selectedOption);
   let onInputChange =
-    React.useCallback0(e => {
-      let value: string = ReactEvent.Form.currentTarget(e)##value;
-      setTextValue(_ => value);
-      setShowOptions(_ => true);
-    });
+    React.useCallback3(
+      e => {
+        let value: string = ReactEvent.Form.currentTarget(e)##value;
+        setTextValue(_ => value);
+        setShowOptions(_ => true);
+        if (!forceOption && hasSelectedOption) {
+          switch (onChange) {
+          | Some(onChange) => onChange(None)
+          | None => ()
+          };
+        };
+      },
+      (forceOption, hasSelectedOption, onChange),
+    );
   let blurTimeout = React.useRef(None);
   let onBlur =
-    React.useCallback0(_ =>
-      React.Ref.setCurrent(
-        blurTimeout,
-        Some(Js.Global.setTimeout(() => setShowOptions(_ => false), 100)),
-      )
+    React.useCallback1(
+      _ => {
+        switch (selectedOption) {
+        | Some(selectedOption) => setTextValue(_ => selectedOption.label)
+        | None => ()
+        };
+        React.Ref.setCurrent(
+          blurTimeout,
+          Some(Js.Global.setTimeout(() => setShowOptions(_ => false), 100)),
+        );
+      },
+      [|selectedOption|],
     );
   let onFocus = _ => {
     switch (React.Ref.current(blurTimeout)) {
@@ -134,15 +159,37 @@ let make =
   let onMouseDown = React.useCallback0(onFocus);
   let onSelect = option => {
     setShowOptions(_ => false);
-    switch (option) {
-    | Some(option) =>
-      switch (onChange) {
-      | Some(onChange) => onChange(option)
-      | None => ()
+    switch (onChange) {
+    | Some(onChange) =>
+      switch (option) {
+      | Some(option) => onChange(Some(option))
+      | None =>
+        if (!forceOption) {
+          onChange(None);
+        }
       }
     | None => ()
     };
   };
+
+  let options = getOptions(textValue);
+  React.useEffect3(
+    () => {
+      if (forceOption && Belt.Option.isNone(selectedOption)) {
+        switch (Belt.Array.get(options, 0)) {
+        | Some(firstOption) =>
+          switch (onChange) {
+          | Some(onChange) => onChange(Some(firstOption))
+          | None => ()
+          }
+        | None => ()
+        };
+      };
+      None;
+    },
+    (forceOption, hasSelectedOption, onChange),
+  );
+
   <div onFocus={React.useCallback0(onFocus)} onBlur>
     <TextInput
       value=textValue
@@ -151,9 +198,8 @@ let make =
       ?placeholder
       ref=inputRef
     />
-    {String.length(textValue) > 0 && showOptions
+    {showOptions
        ? {
-         let options = getOptions(textValue);
          Array.length(options) > 0
            ? <SelectOptions
                options
