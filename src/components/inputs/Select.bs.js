@@ -13,7 +13,7 @@ var Colors$ReactHooksTemplate = require("../theme/Colors.bs.js");
 var TextInput$ReactHooksTemplate = require("./TextInput.bs.js");
 var ContextLayer$ReactHooksTemplate = require("../layer/ContextLayer.bs.js");
 
-var layer = Css.style(/* :: */[
+var optionsLayer = Css.style(/* :: */[
       Css.border(/* `px */[
             25096,
             1
@@ -21,7 +21,16 @@ var layer = Css.style(/* :: */[
             5194459,
             Colors$ReactHooksTemplate.primary450
           ]),
-      /* [] */0
+      /* :: */[
+        Css.maxHeight(/* `px */[
+              25096,
+              200
+            ]),
+        /* :: */[
+          Css.overflow(/* auto */-1065951377),
+          /* [] */0
+        ]
+      ]
     ]);
 
 var option = Css.style(/* :: */[
@@ -70,7 +79,7 @@ var optionFocused = Css.style(/* :: */[
     ]);
 
 var Styles = /* module */[
-  /* layer */layer,
+  /* optionsLayer */optionsLayer,
   /* option */option,
   /* optionSelected */optionSelected,
   /* optionFocused */optionFocused
@@ -81,7 +90,16 @@ function Select$SelectOption(Props) {
   var onClick = Props.onClick;
   var isSelected = Props.isSelected;
   var isFocused = Props.isFocused;
+  var scrollToElement = Props.scrollToElement;
+  var domRef = React.useRef(null);
+  React.useEffect((function () {
+          if (isFocused) {
+            Curry._1(scrollToElement, Belt_Option.getExn(Caml_option.nullable_to_opt(domRef.current)));
+          }
+          return undefined;
+        }), /* array */[isFocused]);
   return React.createElement("div", {
+              ref: domRef,
               className: Cn.make(/* :: */[
                     option,
                     /* :: */[
@@ -167,6 +185,23 @@ function Select$SelectOptions(Props) {
                     return /* () */0;
                   });
         }), ([]));
+  var scrollToElement = React.useCallback((function (optionElement) {
+          var layerDiv = Belt_Option.getExn(Caml_option.nullable_to_opt(layerRef.current));
+          var layerTop = layerDiv.scrollTop | 0;
+          var layerHeight = layerDiv.offsetHeight;
+          var layerBottom = layerTop + layerHeight | 0;
+          var optionTop = optionElement.offsetTop;
+          var optionBottom = optionTop + optionElement.offsetHeight | 0;
+          if (optionTop < layerTop) {
+            layerDiv.scrollTop = optionTop;
+            return /* () */0;
+          } else if (optionBottom > layerBottom) {
+            layerDiv.scrollTop = optionBottom - layerHeight | 0;
+            return /* () */0;
+          } else {
+            return 0;
+          }
+        }), ([]));
   return React.createElement(ContextLayer$ReactHooksTemplate.make, {
               contextRef: contextRef,
               position: /* Bottom */1,
@@ -177,7 +212,7 @@ function Select$SelectOptions(Props) {
                   };
                   return React.createElement("div", {
                               ref: layerRef,
-                              className: layer,
+                              className: optionsLayer,
                               style: style,
                               onMouseDown: onMouseDown
                             }, options.map((function (option, i) {
@@ -190,6 +225,7 @@ function Select$SelectOptions(Props) {
                                                   }),
                                                 isSelected: isSelected,
                                                 isFocused: isFocused,
+                                                scrollToElement: scrollToElement,
                                                 key: String(i)
                                               });
                                   })));
@@ -367,4 +403,4 @@ exports.Styles = Styles;
 exports.SelectOption = SelectOption;
 exports.SelectOptions = SelectOptions;
 exports.make = make;
-/* layer Not a pure module */
+/* optionsLayer Not a pure module */

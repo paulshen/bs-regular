@@ -67,7 +67,7 @@ let getStateOptions = _value => {
   //     ),
   //   stateOptions,
   // )
-  stateOptions |> Js.Array.slice(~start=0, ~end_=8);
+  stateOptions;
 };
 
 [@react.component]

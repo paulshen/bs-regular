@@ -1,6 +1,11 @@
 module Styles = {
   open Css;
-  let layer = style([border(`px(1), `solid, `hex(Colors.primary450))]);
+  let optionsLayer =
+    style([
+      border(`px(1), `solid, `hex(Colors.primary450)),
+      maxHeight(`px(200)),
+      overflow(`auto),
+    ]);
   let option =
     style([
       backgroundColor(`hex(Colors.primary500)),
@@ -16,7 +21,23 @@ type selectOption = {label: string};
 
 module SelectOption = {
   [@react.component]
-  let make = (~option, ~onClick, ~isSelected, ~isFocused) => {
+  let make = (~option, ~onClick, ~isSelected, ~isFocused, ~scrollToElement) => {
+    let domRef = React.useRef(Js.Nullable.null);
+
+    React.useEffect1(
+      () => {
+        if (isFocused) {
+          let element =
+            Belt.Option.getExn(
+              Js.Nullable.toOption(React.Ref.current(domRef)),
+            );
+          Webapi.Dom.(element->Element.unsafeAsHtmlElement |> scrollToElement);
+        };
+        None;
+      },
+      [|isFocused|],
+    );
+
     <div
       onClick
       tabIndex=0
@@ -24,7 +45,8 @@ module SelectOption = {
         Styles.option,
         Cn.ifTrue(Styles.optionSelected, isSelected),
         Cn.ifTrue(Styles.optionFocused, isFocused),
-      ])}>
+      ])}
+      ref={ReactDOMRe.Ref.domRef(domRef)}>
       {React.string(option.label)}
     </div>;
   };
@@ -88,6 +110,29 @@ module SelectOptions = {
       Some(() => Document.removeClickEventListener(onClick, document));
     });
 
+    let scrollToElement =
+      React.useCallback0(optionElement => {
+        let layerDiv =
+          Belt.Option.getExn(
+            Js.Nullable.toOption(React.Ref.current(layerRef)),
+          );
+        open Webapi.Dom;
+        open Webapi.Dom.HtmlElement;
+        let layerDiv = layerDiv->Element.unsafeAsHtmlElement;
+        let layerTop = int_of_float(layerDiv->scrollTop);
+        let layerHeight = layerDiv->offsetHeight;
+        let layerBottom = layerTop + layerHeight;
+
+        let optionTop = optionElement->offsetTop;
+        let optionBottom = optionTop + optionElement->offsetHeight;
+
+        if (optionTop < layerTop) {
+          layerDiv->setScrollTop(float_of_int(optionTop));
+        } else if (optionBottom > layerBottom) {
+          layerDiv->setScrollTop(float_of_int(optionBottom - layerHeight));
+        };
+      });
+
     <ContextLayer position=ContextLayer.Bottom contextRef onKeyPress>
       {(~position as _) => {
          let inputElement =
@@ -102,7 +147,7 @@ module SelectOptions = {
              (),
            );
          <div
-           className=Styles.layer
+           className=Styles.optionsLayer
            onMouseDown
            style
            ref={ReactDOMRe.Ref.domRef(layerRef)}>
@@ -120,6 +165,7 @@ module SelectOptions = {
                     isSelected
                     isFocused
                     onClick={_ => onSelect(Some(option))}
+                    scrollToElement
                     key={string_of_int(i)}
                   />;
                 },

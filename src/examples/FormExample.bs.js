@@ -78,7 +78,7 @@ var stateOptions = states.map((function (state) {
       }));
 
 function getStateOptions(_value) {
-  return stateOptions.slice(0, 8);
+  return stateOptions;
 }
 
 function FormExample(Props) {
