@@ -33,7 +33,18 @@ module SelectOption = {
 module SelectOptions = {
   [@react.component]
   let make = (~options, ~selectedOption, ~onSelect, ~onMouseDown, ~contextRef) => {
-    let (focusedIndex, setFocusedIndex) = React.useState(() => (-1));
+    let (focusedIndex, setFocusedIndex) =
+      React.useState(() =>
+        switch (selectedOption) {
+        | Some(selectedOption) =>
+          switch (Js.Array.indexOf(selectedOption, options)) {
+          | (-1) => 0
+          | index => index
+          }
+        | None => 0
+        }
+      );
+
     let onKeyPress = (e: Webapi.Dom.KeyboardEvent.t) => {
       let numOptions = Js.Array.length(options);
       switch (Webapi.Dom.KeyboardEvent.key(e)) {

@@ -106,7 +106,16 @@ function Select$SelectOptions(Props) {
   var onMouseDown = Props.onMouseDown;
   var contextRef = Props.contextRef;
   var match = React.useState((function () {
-          return -1;
+          if (selectedOption !== undefined) {
+            var index = options.indexOf(selectedOption);
+            if (index !== -1) {
+              return index;
+            } else {
+              return 0;
+            }
+          } else {
+            return 0;
+          }
         }));
   var setFocusedIndex = match[1];
   var focusedIndex = match[0];
