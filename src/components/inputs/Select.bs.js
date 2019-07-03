@@ -135,6 +135,29 @@ function Select$SelectOptions(Props) {
         return /* () */0;
     }
   };
+  var onSelectRef = React.useRef(onSelect);
+  React.useEffect((function () {
+          onSelectRef.current = onSelect;
+          return undefined;
+        }), /* array */[onSelect]);
+  var layerRef = React.useRef(null);
+  React.useEffect((function () {
+          var onClick = function (e) {
+            var target = e.target;
+            var layerDiv = Belt_Option.getExn(Caml_option.nullable_to_opt(layerRef.current));
+            if (layerDiv.contains(target)) {
+              return 0;
+            } else {
+              var onSelect = onSelectRef.current;
+              return Curry._1(onSelect, undefined);
+            }
+          };
+          document.addEventListener("click", onClick);
+          return (function (param) {
+                    document.removeEventListener("click", onClick);
+                    return /* () */0;
+                  });
+        }), ([]));
   return React.createElement(ContextLayer$ReactHooksTemplate.make, {
               contextRef: contextRef,
               position: /* Bottom */1,
@@ -144,6 +167,7 @@ function Select$SelectOptions(Props) {
                     width: String(inputElement.clientWidth) + "px"
                   };
                   return React.createElement("div", {
+                              ref: layerRef,
                               className: layer,
                               style: style,
                               onMouseDown: onMouseDown

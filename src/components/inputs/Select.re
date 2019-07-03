@@ -50,6 +50,33 @@ module SelectOptions = {
       };
     };
 
+    let onSelectRef = React.useRef(onSelect);
+    React.useEffect1(
+      () => {
+        React.Ref.setCurrent(onSelectRef, onSelect);
+        None;
+      },
+      [|onSelect|],
+    );
+
+    let layerRef = React.useRef(Js.Nullable.null);
+    React.useEffect0(() => {
+      open Webapi.Dom;
+      let onClick = e => {
+        let target = MouseEvent.target(e);
+        let layerDiv =
+          Belt.Option.getExn(
+            Js.Nullable.toOption(React.Ref.current(layerRef)),
+          );
+        if (!Element.contains(EventTarget.unsafeAsElement(target), layerDiv)) {
+          let onSelect = React.Ref.current(onSelectRef);
+          onSelect(None);
+        };
+      };
+      Document.addClickEventListener(onClick, document);
+      Some(() => Document.removeClickEventListener(onClick, document));
+    });
+
     <ContextLayer position=ContextLayer.Bottom contextRef onKeyPress>
       {(~position as _) => {
          let inputElement =
@@ -63,7 +90,11 @@ module SelectOptions = {
                ++ "px",
              (),
            );
-         <div className=Styles.layer onMouseDown style>
+         <div
+           className=Styles.layer
+           onMouseDown
+           style
+           ref={ReactDOMRe.Ref.domRef(layerRef)}>
            {React.array(
               Js.Array.mapi(
                 (option, i) => {
