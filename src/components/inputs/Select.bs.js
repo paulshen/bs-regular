@@ -167,16 +167,22 @@ function Select$SelectOptions(Props) {
           onSelectRef.current = onSelect;
           return undefined;
         }), /* array */[onSelect]);
+  var contextRefRef = React.useRef(contextRef);
+  React.useEffect((function () {
+          contextRefRef.current = contextRef;
+          return undefined;
+        }), /* array */[contextRef]);
   var layerRef = React.useRef(null);
   React.useEffect((function () {
           var onClick = function (e) {
             var target = e.target;
             var layerDiv = Belt_Option.getExn(Caml_option.nullable_to_opt(layerRef.current));
-            if (layerDiv.contains(target)) {
-              return 0;
-            } else {
+            var contextElement = Belt_Option.getExn(Caml_option.nullable_to_opt(contextRefRef.current.current));
+            if (!layerDiv.contains(target) && !contextElement.contains(target)) {
               var onSelect = onSelectRef.current;
               return Curry._1(onSelect, undefined);
+            } else {
+              return 0;
             }
           };
           document.addEventListener("click", onClick);

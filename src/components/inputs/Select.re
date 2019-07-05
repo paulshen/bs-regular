@@ -91,6 +91,14 @@ module SelectOptions = {
       },
       [|onSelect|],
     );
+    let contextRefRef = React.useRef(contextRef);
+    React.useEffect1(
+      () => {
+        React.Ref.setCurrent(contextRefRef, contextRef);
+        None;
+      },
+      [|contextRef|],
+    );
 
     let layerRef = React.useRef(Js.Nullable.null);
     React.useEffect0(() => {
@@ -101,7 +109,15 @@ module SelectOptions = {
           Belt.Option.getExn(
             Js.Nullable.toOption(React.Ref.current(layerRef)),
           );
-        if (!Element.contains(EventTarget.unsafeAsElement(target), layerDiv)) {
+        let contextElement =
+          Belt.Option.getExn(
+            Js.Nullable.toOption(
+              React.Ref.current(React.Ref.current(contextRefRef)),
+            ),
+          );
+        let targetElement = EventTarget.unsafeAsElement(target);
+        if (!Element.contains(targetElement, layerDiv)
+            && !Element.contains(targetElement, contextElement)) {
           let onSelect = React.Ref.current(onSelectRef);
           onSelect(None);
         };
