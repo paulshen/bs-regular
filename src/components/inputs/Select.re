@@ -311,8 +311,7 @@ let make =
            ?placeholder
            ref=inputRef
          />
-       : <TextInput.static
-           onClick={_ => setShowOptions(show => !show)} ?label ref=inputRef>
+       : <TextInput.static ?label tabIndex=0 ref=inputRef>
            {switch (selectedOption) {
             | Some(selectedOption) => React.string(selectedOption.label)
             | None => React.null

@@ -167,6 +167,7 @@ var $$static = React.forwardRef((function (Props, forwardedRef) {
         var children = Props.children;
         var className = Props.className;
         var label = Props.label;
+        var tabIndex = Props.tabIndex;
         var onClick = Props.onClick;
         var tmp = {
           className: Cn.make(/* :: */[
@@ -182,6 +183,9 @@ var $$static = React.forwardRef((function (Props, forwardedRef) {
               }));
         if (tmp$1 !== undefined) {
           tmp.ref = Caml_option.valFromOption(tmp$1);
+        }
+        if (tabIndex !== undefined) {
+          tmp.tabIndex = Caml_option.valFromOption(tabIndex);
         }
         if (onClick !== undefined) {
           tmp.onClick = Caml_option.valFromOption(onClick);

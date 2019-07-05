@@ -70,11 +70,12 @@ let make =
 [@react.component]
 let static =
   React.forwardRef(
-    (~children, ~className=?, ~label=?, ~onClick=?, forwardedRef) => {
+    (~children, ~className=?, ~label=?, ~tabIndex=?, ~onClick=?, forwardedRef) => {
     let input =
       <div
         className={Cn.make([Styles.input, Cn.unpack(className)])}
         ?onClick
+        ?tabIndex
         ref=?{
           Belt.Option.map(
             Js.Nullable.toOption(forwardedRef),

@@ -372,11 +372,7 @@ function Select(Props) {
   } else {
     var tmp$2 = {
       children: selectedOption !== undefined ? selectedOption[/* label */0] : null,
-      onClick: (function (param) {
-          return Curry._1(setShowOptions, (function (show) {
-                        return !show;
-                      }));
-        }),
+      tabIndex: 0,
       ref: inputRef
     };
     if (label !== undefined) {
