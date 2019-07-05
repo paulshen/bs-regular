@@ -67,7 +67,20 @@ module SelectOptions = {
         }
       );
 
+    let keyFilter = React.useRef("");
+    let keyFilterTimeoutRef = React.useRef(None);
+
+    let clearKeyFilterTimeout = () => {
+      switch (React.Ref.current(keyFilterTimeoutRef)) {
+      | Some(keyFilterTimeout) =>
+        Js.Global.clearTimeout(keyFilterTimeout);
+        React.Ref.setCurrent(keyFilterTimeoutRef, None);
+      | None => ()
+      };
+    };
     let onKeyPress = (e: Webapi.Dom.KeyboardEvent.t) => {
+      clearKeyFilterTimeout();
+
       let numOptions = Js.Array.length(options);
       switch (Webapi.Dom.KeyboardEvent.key(e)) {
       | "Esc"
@@ -79,7 +92,42 @@ module SelectOptions = {
         setFocusedIndex(i => (i + 1) mod numOptions);
         Webapi.Dom.KeyboardEvent.preventDefault(e);
       | "Enter" => onSelect(Belt.Array.get(options, focusedIndex))
-      | _ => ()
+      | key =>
+        if (String.length(key) == 1) {
+          open Char;
+          let lowercaseKey = code(lowercase(key.[0]));
+          if (lowercaseKey >= code('a') && lowercaseKey <= code('z')) {
+            let keyFilterStr =
+              React.Ref.current(keyFilter) ++ String.lowercase(key);
+            switch (
+              Js.Array.findIndex(
+                option =>
+                  Js.String.startsWith(
+                    keyFilterStr,
+                    Js.String.toLowerCase(option.label),
+                  ),
+                options,
+              )
+            ) {
+            | (-1) => ()
+            | firstMatchingOptionIndex =>
+              setFocusedIndex(_ => firstMatchingOptionIndex)
+            };
+            React.Ref.setCurrent(keyFilter, keyFilterStr);
+          };
+          React.Ref.setCurrent(
+            keyFilterTimeoutRef,
+            Some(
+              Js.Global.setTimeout(
+                () => {
+                  React.Ref.setCurrent(keyFilter, "");
+                  React.Ref.setCurrent(keyFilterTimeoutRef, None);
+                },
+                300,
+              ),
+            ),
+          );
+        }
       };
     };
 
@@ -123,7 +171,12 @@ module SelectOptions = {
         };
       };
       Document.addClickEventListener(onClick, document);
-      Some(() => Document.removeClickEventListener(onClick, document));
+      Some(
+        () => {
+          Document.removeClickEventListener(onClick, document);
+          clearKeyFilterTimeout();
+        },
+      );
     });
 
     let scrollToElement =
@@ -311,7 +364,11 @@ let make =
            ?placeholder
            ref=inputRef
          />
-       : <TextInput.static ?label tabIndex=0 ref=inputRef>
+       : <TextInput.static
+           ?label
+           tabIndex=0
+           onClick={_ => setShowOptions(_ => true)}
+           ref=inputRef>
            {switch (selectedOption) {
             | Some(selectedOption) => React.string(selectedOption.label)
             | None => React.null

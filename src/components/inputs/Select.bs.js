@@ -3,12 +3,15 @@
 
 var Cn = require("re-classnames/src/Cn.bs.js");
 var Css = require("bs-css/src/Css.js");
+var Char = require("bs-platform/lib/js/char.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
+var $$String = require("bs-platform/lib/js/string.js");
 var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
 var Caml_int32 = require("bs-platform/lib/js/caml_int32.js");
 var Belt_Option = require("bs-platform/lib/js/belt_Option.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
+var Caml_string = require("bs-platform/lib/js/caml_string.js");
 var Colors$ReactHooksTemplate = require("../theme/Colors.bs.js");
 var TextInput$ReactHooksTemplate = require("./TextInput.bs.js");
 var ContextLayer$ReactHooksTemplate = require("../layer/ContextLayer.bs.js");
@@ -137,10 +140,23 @@ function Select$SelectOptions(Props) {
         }));
   var setFocusedIndex = match[1];
   var focusedIndex = match[0];
+  var keyFilter = React.useRef("");
+  var keyFilterTimeoutRef = React.useRef(undefined);
+  var clearKeyFilterTimeout = function (param) {
+    var match = keyFilterTimeoutRef.current;
+    if (match !== undefined) {
+      clearTimeout(Caml_option.valFromOption(match));
+      keyFilterTimeoutRef.current = undefined;
+      return /* () */0;
+    } else {
+      return /* () */0;
+    }
+  };
   var onKeyPress = function (e) {
+    clearKeyFilterTimeout(/* () */0);
     var numOptions = options.length;
-    var match = e.key;
-    switch (match) {
+    var key = e.key;
+    switch (key) {
       case "ArrowDown" : 
           Curry._1(setFocusedIndex, (function (i) {
                   return Caml_int32.mod_(i + 1 | 0, numOptions);
@@ -159,7 +175,29 @@ function Select$SelectOptions(Props) {
       case "Escape" : 
           return Curry._1(onSelect, undefined);
       default:
-        return /* () */0;
+        if (key.length === 1) {
+          var lowercaseKey = Char.lowercase(Caml_string.get(key, 0));
+          if (lowercaseKey >= /* "a" */97 && lowercaseKey <= /* "z" */122) {
+            var keyFilterStr = keyFilter.current + $$String.lowercase(key);
+            var firstMatchingOptionIndex = options.findIndex((function (option) {
+                    return option[/* label */0].toLowerCase().startsWith(keyFilterStr);
+                  }));
+            if (firstMatchingOptionIndex !== -1) {
+              Curry._1(setFocusedIndex, (function (param) {
+                      return firstMatchingOptionIndex;
+                    }));
+            }
+            keyFilter.current = keyFilterStr;
+          }
+          keyFilterTimeoutRef.current = Caml_option.some(setTimeout((function (param) {
+                      keyFilter.current = "";
+                      keyFilterTimeoutRef.current = undefined;
+                      return /* () */0;
+                    }), 300));
+          return /* () */0;
+        } else {
+          return 0;
+        }
     }
   };
   var onSelectRef = React.useRef(onSelect);
@@ -188,7 +226,7 @@ function Select$SelectOptions(Props) {
           document.addEventListener("click", onClick);
           return (function (param) {
                     document.removeEventListener("click", onClick);
-                    return /* () */0;
+                    return clearKeyFilterTimeout(/* () */0);
                   });
         }), ([]));
   var scrollToElement = React.useCallback((function (optionElement) {
@@ -373,6 +411,11 @@ function Select(Props) {
     var tmp$2 = {
       children: selectedOption !== undefined ? selectedOption[/* label */0] : null,
       tabIndex: 0,
+      onClick: (function (param) {
+          return Curry._1(setShowOptions, (function (param) {
+                        return true;
+                      }));
+        }),
       ref: inputRef
     };
     if (label !== undefined) {
