@@ -7,6 +7,7 @@ var React = require("react");
 var Card$ReactHooksTemplate = require("./components/Card.bs.js");
 var Grid$ReactHooksTemplate = require("./components/Grid.bs.js");
 var Text$ReactHooksTemplate = require("./components/Text.bs.js");
+var Badge$ReactHooksTemplate = require("./components/Badge.bs.js");
 var Layer$ReactHooksTemplate = require("./components/layer/Layer.bs.js");
 var Button$ReactHooksTemplate = require("./components/Button.bs.js");
 var Colors$ReactHooksTemplate = require("./components/theme/Colors.bs.js");
@@ -65,6 +66,14 @@ var cardPink = Css.style(/* :: */[
       /* [] */0
     ]);
 
+var badge = Css.style(/* :: */[
+      Css.marginRight(/* `px */[
+            25096,
+            8
+          ]),
+      /* [] */0
+    ]);
+
 var Styles = /* module */[
   /* container */container,
   /* root */root,
@@ -72,7 +81,8 @@ var Styles = /* module */[
   /* section */section,
   /* gridRow */gridRow,
   /* gridCell */gridCell,
-  /* cardPink */cardPink
+  /* cardPink */cardPink,
+  /* badge */badge
 ];
 
 function repeatElement(num, render) {
@@ -211,6 +221,19 @@ function App(Props) {
                                             }), React.createElement(Text$ReactHooksTemplate.smallBody, {
                                               children: null
                                             }, "By leveraging the latter's great type system, expressive language features and smooth interoperability with JS, ReasonReact packs ReactJS' features into an API that is:", React.createElement("ul", undefined, React.createElement("li", undefined, "Safe and statically typed"), React.createElement("li", undefined, "Simple and lean"), React.createElement("li", undefined, "Familiar and easy to insert into an existing ReactJS codebase"), React.createElement("li", undefined, "Well thought-out (made by the creator of ReactJS himself!)"))))
+                                  }))), React.createElement("div", {
+                            className: section
+                          }, React.createElement(Text$ReactHooksTemplate.header, {
+                                children: "Badge"
+                              }), React.createElement("div", undefined, React.createElement(Badge$ReactHooksTemplate.make, {
+                                    children: "8",
+                                    className: badge
+                                  }), React.createElement(Badge$ReactHooksTemplate.make, {
+                                    children: "24",
+                                    className: badge
+                                  }), React.createElement(Badge$ReactHooksTemplate.make, {
+                                    children: "Unread",
+                                    className: badge
                                   })))), React.createElement(Modals$ReactHooksTemplate.make, { }), React.createElement(Layer$ReactHooksTemplate.container, { }))
             });
 }

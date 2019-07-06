@@ -18,6 +18,7 @@ module Styles = {
   let gridCell = style([backgroundColor(`hex(Colors.primary475))]);
 
   let cardPink = style([backgroundColor(`hex(Colors.pink))]);
+  let badge = style([marginRight(`px(8))]);
 };
 
 let repeatElement = (num: int, render) => {
@@ -154,6 +155,14 @@ let make = () => {
               </Card>
             </Grid.cell>
           </Grid.row>
+        </div>
+        <div className=Styles.section>
+          <Text.header> {React.string("Badge")} </Text.header>
+          <div>
+            <Badge className=Styles.badge> {React.string("8")} </Badge>
+            <Badge className=Styles.badge> {React.string("24")} </Badge>
+            <Badge className=Styles.badge> {React.string("Unread")} </Badge>
+          </div>
         </div>
       </div>
       <Modals />
