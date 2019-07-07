@@ -1,20 +1,10 @@
 module Styles = {
   open Css;
   let container = style([display(`flex), justifyContent(`center)]);
-  let root = style([%style {|
-    padding: 64px 32px;
-  |}]);
-  let button = style([%style {|
-    margin-right: 8px;
-  |}]);
-  let section =
-    style([%style {|
-    margin-bottom: 32px;
-    max-width: 640px;
-  |}]);
-  let gridRow = style([%style {|
-    margin-bottom: 16px;
-  |}]);
+  let root = style([padding2(~v=`px(64), ~h=`px(32))]);
+  let button = style([marginRight(`px(8))]);
+  let section = style([marginBottom(`px(32)), maxWidth(`px(640))]);
+  let gridRow = style([marginBottom(`px(16))]);
   let gridCell = style([backgroundColor(`hex(Colors.primary475))]);
 
   let cardPink = style([backgroundColor(`hex(Colors.pink))]);

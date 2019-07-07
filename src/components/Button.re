@@ -1,17 +1,13 @@
 module Styles = {
   open Css;
   let button =
-    style(
-      [%style
-        {|
-    border-radius: 2px;
-    border-style: none;
-    color: #ffffff;
-    font-size: 16px;
-    padding: 10px 16px;
-  |}
-      ],
-    );
+    style([
+      borderRadius(`px(2)),
+      borderStyle(`none),
+      color(`hex(Colors.primary500)),
+      fontSize(`px(16)),
+      padding2(~v=`px(10), ~h=`px(16)),
+    ]);
   let primary = style([backgroundColor(`hex(Colors.primary200))]);
   let secondary = style([backgroundColor(`hex("2A77DF"))]);
 };

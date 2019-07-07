@@ -21,7 +21,6 @@
     "bs-webapi"
   ],
   "ppx-flags": [
-    "ppx_bs_css/ppx"
   ],
   "refmt": 3
 }
