@@ -3198,11 +3198,6 @@ posix-character-classes@^0.1.0:
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
   integrity sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=
 
-ppx_bs_css@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/ppx_bs_css/-/ppx_bs_css-0.1.0.tgz#22369ec4d2342731abea7914eec7b5e975f9418f"
-  integrity sha512-M0ZvMsxXZGIEvcCmPGxnAJQ5mmbTXxbGsAt4NRC2qYFTlsRmpH0xcg126wub1PV9NJPIIwLHfmBSshjTQl3fPA==
-
 prettier@^1.17.0:
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.18.2.tgz#6823e7c5900017b4bd3acf46fe9ac4b4d7bda9ea"
