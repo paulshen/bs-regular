@@ -13,7 +13,7 @@
   "keywords": [
     "BuckleScript"
   ],
-  "author": "",
+  "author": "Paul Shen",
   "license": "MIT",
   "dependencies": {
     "bs-css": "^8.0.4",
