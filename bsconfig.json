@@ -1,6 +1,6 @@
 
 {
-  "name": "bs-regular",
+  "name": "regular",
   "reason": {
     "react-jsx": 3
   },
@@ -19,6 +19,7 @@
     "in-source": true
   }],
   "suffix": ".bs.js",
+  "namespace": true,
   "bs-dependencies": [
     "reason-react",
     "bs-css",
