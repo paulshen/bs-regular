@@ -1,5 +1,5 @@
 {
-  "name": "reason-ui",
+  "name": "bs-regular",
   "version": "0.1.0",
   "scripts": {
     "build": "bsb -make-world",
