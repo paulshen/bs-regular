@@ -9,9 +9,11 @@ module Styles = {
     ]);
 };
 
-[@react.component]
-let root = (~children) => {
-  <div className=Styles.root> children </div>;
+module Root = {
+  [@react.component]
+  let make = (~children) => {
+    <div className=Styles.root> children </div>;
+  };
 };
 
 [@react.component]
@@ -21,20 +23,20 @@ let make = (~renderModal, ~onCloseRequest=?, ()) => {
   let onCloseRequestRef = React.useRef(onCloseRequest);
   React.useLayoutEffect0(() => {
     let modalKey = Modals.openModal(~renderModal, ~onCloseRequest);
-    modalKeyRef->React.Ref.setCurrent(Some(modalKey));
+    modalKeyRef.current = Some(modalKey);
     Some(() => Modals.closeModal(modalKey));
   });
   React.useLayoutEffect2(
     () => {
-      if (React.Ref.current(renderModalRef) !== renderModal
-          || React.Ref.current(onCloseRequestRef) !== onCloseRequest) {
+      if (renderModalRef.current !== renderModal
+          || onCloseRequestRef.current !== onCloseRequest) {
         Modals.updateModal(
-          Belt.Option.getExn(React.Ref.current(modalKeyRef)),
+          Belt.Option.getExn(modalKeyRef.current),
           ~renderModal,
           ~onCloseRequest,
         );
-        renderModalRef->React.Ref.setCurrent(renderModal);
-        onCloseRequestRef->React.Ref.setCurrent(onCloseRequest);
+        renderModalRef.current = renderModal;
+        onCloseRequestRef.current = onCloseRequest;
       };
       None;
     },

@@ -29,13 +29,13 @@ let make =
       forwardedRef,
     ) =>
     <button
-      className={Cn.make([
+      className={Cn.fromList([
         Styles.button,
         switch (type_) {
         | Primary => Styles.primary
         | Secondary => Styles.secondary
         },
-        Cn.unpack(className),
+        Cn.take(className),
       ])}
       ?onClick
       ?onMouseEnter

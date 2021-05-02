@@ -1,0 +1,1 @@
+type selectOption = {label: string};

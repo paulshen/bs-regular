@@ -78,11 +78,11 @@ let make = () => {
     <div className=Spacing.marginBottom16>
       <TextInput label="Street Address" placeholder="1 Folsom Street" />
     </div>
-    <Grid.row className=Spacing.marginBottom16>
-      <Grid.cell span=6>
+    <Grid.Row className=Spacing.marginBottom16>
+      <Grid.Cell span=6>
         <TextInput label="City" placeholder="San Francisco" />
-      </Grid.cell>
-      <Grid.cell span=6>
+      </Grid.Cell>
+      <Grid.Cell span=6>
         <Select
           getOptions=getStateOptions
           label="State"
@@ -92,8 +92,8 @@ let make = () => {
           withTextInput=false
           forceOption=true
         />
-      </Grid.cell>
-    </Grid.row>
+      </Grid.Cell>
+    </Grid.Row>
     <div className=Styles.row>
       <Button type_=Button.Secondary> {React.string("Save")} </Button>
     </div>
