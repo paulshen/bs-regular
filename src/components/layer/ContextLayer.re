@@ -41,7 +41,7 @@ let getAnchor =
 [@react.component]
 let make =
     (
-      ~contextRef: React.Ref.t(Js.Nullable.t(Dom.element))=?,
+      ~contextRef: React.ref(Js.Nullable.t(Dom.element)),
       ~position=Top,
       ~children: (~position: position) => React.element,
       ~onKeyPress=?,
@@ -50,15 +50,14 @@ let make =
   let divRef = React.useRef(Js.Nullable.null);
   React.useLayoutEffect0(() => {
     let contextElement =
-      switch (Js.Nullable.toOption(React.Ref.current(contextRef))) {
+      switch (Js.Nullable.toOption(contextRef.current)) {
       | Some(element) => element
       | None => raise(RefHasNoElement)
       };
     let contextRect =
       Webapi.Dom.Element.getBoundingClientRect(contextElement);
 
-    let layerDiv =
-      Belt.Option.getExn(Js.Nullable.toOption(React.Ref.current(divRef)));
+    let layerDiv = Belt.Option.getExn(Js.Nullable.toOption(divRef.current));
     let layerRect = Webapi.Dom.Element.getBoundingClientRect(layerDiv);
 
     setAnchor(_ => Some(getAnchor(contextRect, layerRect, position)));

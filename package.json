@@ -6,31 +6,32 @@
     "start": "bsb -make-world -w",
     "clean": "bsb -clean-world",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack": "webpack -w",
     "webpack:production": "NODE_ENV=production webpack",
-    "server": "webpack-dev-server"
+    "refmt": "find src -name '*.re*' | xargs bsrefmt --in-place",
+    "webpack": "webpack serve"
   },
-  "keywords": [
-    "BuckleScript"
-  ],
+  "keywords": [ "BuckleScript" ],
   "author": "Paul Shen",
   "license": "MIT",
   "dependencies": {
-    "bs-webapi": "^0.15.2",
-    "re-classnames": "^4.0.0",
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
-    "reason-react": ">=0.7.0"
+    "bs-webapi": "^0.19.1",
+    "re-classnames": "^5.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "reason-react": ">=0.9.1"
   },
   "peerDependencies": {
-    "bs-css": "^9.0"
+    "bs-css": "14.0.1",
+    "bs-css-emotion": "^2.5.1"
   },
   "devDependencies": {
-    "bs-css": "^9.0",
-    "bs-platform": "^5.0.4",
-    "html-webpack-plugin": "^3.2.0",
-    "webpack": "^4.0.1",
-    "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.8"
+    "bs-css": "14.0.1",
+    "bs-css-emotion": "^2.5.1",
+    "bs-platform": "9.0.2",
+    "html-webpack-plugin": "^5.3.1",
+    "terser-webpack-plugin": "5.1.1",
+    "webpack": "5.36.2",
+    "webpack-cli": "4.6.0",
+    "webpack-dev-server": "^3.11.2"
   }
 }

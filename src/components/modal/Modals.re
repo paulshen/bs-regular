@@ -18,7 +18,7 @@ module Styles = {
       left(`zero),
       right(`zero),
       bottom(`zero),
-      backgroundColor(`rgba((0, 0, 0, 0.1))),
+      backgroundColor(`rgba((0, 0, 0, `num(0.1)))),
       zIndex(-1),
     ]);
 };

@@ -43,7 +43,7 @@ let make =
     let input =
       <input
         type_="text"
-        className={Cn.make([Styles.input, Cn.unpack(className)])}
+        className={Cn.fromList([Styles.input, Cn.take(className)])}
         id=inputId
         ?placeholder
         ?value
@@ -66,27 +66,35 @@ let make =
     | None => input
     };
   });
-
-[@react.component]
-let static =
-  React.forwardRef(
-    (~children, ~className=?, ~label=?, ~tabIndex=?, ~onClick=?, forwardedRef) => {
-    let input =
-      <div
-        className={Cn.make([Styles.input, Cn.unpack(className)])}
-        ?onClick
-        ?tabIndex
-        ref=?{
-          Belt.Option.map(
-            Js.Nullable.toOption(forwardedRef),
-            ReactDOMRe.Ref.domRef,
-          )
-        }>
-        children
-      </div>;
-    switch (label) {
-    | Some(label) =>
-      <> <FormLabel> {React.string(label)} </FormLabel> input </>
-    | None => input
-    };
-  });
+module Static = {
+  [@react.component]
+  let make =
+    React.forwardRef(
+      (
+        ~children,
+        ~className=?,
+        ~label=?,
+        ~tabIndex=?,
+        ~onClick=?,
+        forwardedRef,
+      ) => {
+      let input =
+        <div
+          className={Cn.fromList([Styles.input, Cn.take(className)])}
+          ?onClick
+          ?tabIndex
+          ref=?{
+            Belt.Option.map(
+              Js.Nullable.toOption(forwardedRef),
+              ReactDOMRe.Ref.domRef,
+            )
+          }>
+          children
+        </div>;
+      switch (label) {
+      | Some(label) =>
+        <> <FormLabel> {React.string(label)} </FormLabel> input </>
+      | None => input
+      };
+    });
+};

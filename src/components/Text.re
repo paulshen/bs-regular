@@ -31,37 +31,44 @@ module Styles = {
     ]);
 };
 
-[@react.component]
-let smallBody = (~children, ~className=?) =>
-  <div className={Cn.make([Styles.smallBody, Cn.unpack(className)])}>
-    children
-  </div>;
+module SmallBody = {
+  [@react.component]
+  let make = (~children, ~className=?) =>
+    <div className={Cn.fromList([Styles.smallBody, Cn.take(className)])}>
+      children
+    </div>;
+};
 
-[@react.component]
-let smallBodyBold = (~children, ~className=?) =>
-  <div
-    className={Cn.make([
-      Styles.smallBody,
-      Styles.smallBodyBold,
-      Cn.unpack(className),
-    ])}>
-    children
-  </div>;
-
-[@react.component]
-let body = (~children, ~className=?) =>
-  <div className={Cn.make([Styles.body, Cn.unpack(className)])}>
-    children
-  </div>;
-
-[@react.component]
-let header = (~children, ~className=?) =>
-  <div className={Cn.make([Styles.header, Cn.unpack(className)])}>
-    children
-  </div>;
-
-[@react.component]
-let smallHeader = (~children, ~className=?) =>
-  <div className={Cn.make([Styles.smallHeader, Cn.unpack(className)])}>
-    children
-  </div>;
+module SmallBodyBold = {
+  [@react.component]
+  let make = (~children, ~className=?) =>
+    <div
+      className={Cn.fromList([
+        Styles.smallBody,
+        Styles.smallBodyBold,
+        Cn.take(className),
+      ])}>
+      children
+    </div>;
+};
+module Body = {
+  [@react.component]
+  let make = (~children, ~className=?) =>
+    <div className={Cn.fromList([Styles.body, Cn.take(className)])}>
+      children
+    </div>;
+};
+module Header = {
+  [@react.component]
+  let make = (~children, ~className=?) =>
+    <div className={Cn.fromList([Styles.header, Cn.take(className)])}>
+      children
+    </div>;
+};
+module SmallHeader = {
+  [@react.component]
+  let make = (~children, ~className=?) =>
+    <div className={Cn.fromList([Styles.smallHeader, Cn.take(className)])}>
+      children
+    </div>;
+};

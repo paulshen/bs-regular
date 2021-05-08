@@ -18,60 +18,63 @@ module ContextProvider = {
   let make = React.Context.provider(context);
 };
 
-[@react.component]
-let row = (~className=?, ~span=?, ~children) => {
-  let {gutter} = React.useContext(context);
-  let style =
-    switch (gutter) {
-    | 0 => None
-    | gutter =>
-      Some(
-        ReactDOMRe.Style.make(
-          ~marginLeft=string_of_int(- gutter) ++ "px",
-          ~marginRight=string_of_int(- gutter) ++ "px",
-          (),
-        ),
-      )
+module Row = {
+  [@react.component]
+  let make = (~className=?, ~span=?, ~children) => {
+    let {gutter} = React.useContext(context);
+    let style =
+      switch (gutter) {
+      | 0 => None
+      | gutter =>
+        Some(
+          ReactDOMRe.Style.make(
+            ~marginLeft=string_of_int(- gutter) ++ "px",
+            ~marginRight=string_of_int(- gutter) ++ "px",
+            (),
+          ),
+        )
+      };
+    let body =
+      <div className={Cn.fromList([Styles.row, Cn.take(className)])} ?style>
+        children
+      </div>;
+    switch (span) {
+    | Some(span) =>
+      <ContextProvider value={span, gutter}> body </ContextProvider>
+    | None => body
     };
-  let body =
-    <div className={Cn.make([Styles.row, Cn.unpack(className)])} ?style>
-      children
-    </div>;
-  switch (span) {
-  | Some(span) =>
-    <ContextProvider value={span, gutter}> body </ContextProvider>
-  | None => body
   };
 };
-
-[@react.component]
-let cell = (~span, ~className=?, ~children) => {
-  let {span: contextSpan, gutter} = React.useContext(context);
-  let style =
-    ReactDOMRe.Style.make(
-      ~width=
-        Js.Float.toString(
-          float_of_int(span) /. float_of_int(contextSpan) *. 100.,
-        )
-        ++ "%",
-      (),
-    );
-  let style =
-    if (gutter != 0) {
-      ReactDOMRe.Style.combine(
-        style,
-        ReactDOMRe.Style.make(
-          ~paddingLeft=string_of_int(gutter) ++ "px",
-          ~paddingRight=string_of_int(gutter) ++ "px",
-          (),
-        ),
+module Cell = {
+  [@react.component]
+  let make = (~span, ~className=?, ~children) => {
+    let {span: contextSpan, gutter} = React.useContext(context);
+    let style =
+      ReactDOMRe.Style.make(
+        ~width=
+          Js.Float.toString(
+            float_of_int(span) /. float_of_int(contextSpan) *. 100.,
+          )
+          ++ "%",
+        (),
       );
-    } else {
-      style;
-    };
-  <ContextProvider value={span, gutter}>
-    <div className={Cn.make([Styles.cell, Cn.unpack(className)])} style>
-      children
-    </div>
-  </ContextProvider>;
+    let style =
+      if (gutter != 0) {
+        ReactDOMRe.Style.combine(
+          style,
+          ReactDOMRe.Style.make(
+            ~paddingLeft=string_of_int(gutter) ++ "px",
+            ~paddingRight=string_of_int(gutter) ++ "px",
+            (),
+          ),
+        );
+      } else {
+        style;
+      };
+    <ContextProvider value={span, gutter}>
+      <div className={Cn.fromList([Styles.cell, Cn.take(className)])} style>
+        children
+      </div>
+    </ContextProvider>;
+  };
 };

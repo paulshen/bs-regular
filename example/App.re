@@ -21,11 +21,11 @@ let repeatElement = (num: int, render) => {
 
 [@react.component]
 let make = () => {
-  <Layer.provider>
+  <Layer.Provider>
     <div className=Styles.container>
       <div className=Styles.root>
         <div className=Styles.section>
-          <Text.header> {React.string("Buttons")} </Text.header>
+          <Text.Header> {React.string("Buttons")} </Text.Header>
           <Button className=Styles.button> {React.string("primary")} </Button>
           <Button type_=Button.Secondary className=Styles.button>
             {React.string("secondary")}
@@ -33,61 +33,61 @@ let make = () => {
         </div>
         <div className=Styles.section>
           <Divider />
-          <Text.smallHeader> {React.string("Header")} </Text.smallHeader>
-          <Text.body>
+          <Text.SmallHeader> {React.string("Header")} </Text.SmallHeader>
+          <Text.Body>
             {React.string(
                "Such a riot of sea and wind strews the whole extent of beach with whatever has been lost or thrown overboard, or torn out of sunken ships. Many a man has made a good week's work in a single day by what he has found while walking along the Beach when the surf was down.",
              )}
-          </Text.body>
+          </Text.Body>
         </div>
         <div className=Styles.section>
-          <Text.header> {React.string("Grid")} </Text.header>
-          <Grid.row className=Styles.gridRow>
-            <Grid.cell span=6>
+          <Text.Header> {React.string("Grid")} </Text.Header>
+          <Grid.Row className=Styles.gridRow>
+            <Grid.Cell span=6>
               <div className=Styles.gridCell> {React.string("6")} </div>
-            </Grid.cell>
-            <Grid.cell span=6>
+            </Grid.Cell>
+            <Grid.Cell span=6>
               <div className=Styles.gridCell> {React.string("6")} </div>
-            </Grid.cell>
-          </Grid.row>
-          <Grid.row className=Styles.gridRow>
+            </Grid.Cell>
+          </Grid.Row>
+          <Grid.Row className=Styles.gridRow>
             {React.array(
                repeatElement(3, i =>
-                 <Grid.cell span=4 key={string_of_int(i)}>
+                 <Grid.Cell span=4 key={string_of_int(i)}>
                    <div className=Styles.gridCell> {React.string("4")} </div>
-                 </Grid.cell>
+                 </Grid.Cell>
                ),
              )}
-          </Grid.row>
-          <Grid.row className=Styles.gridRow>
+          </Grid.Row>
+          <Grid.Row className=Styles.gridRow>
             {React.array(
                repeatElement(4, i =>
-                 <Grid.cell span=3 key={string_of_int(i)}>
+                 <Grid.Cell span=3 key={string_of_int(i)}>
                    <div className=Styles.gridCell> {React.string("3")} </div>
-                 </Grid.cell>
+                 </Grid.Cell>
                ),
              )}
-          </Grid.row>
-          <Grid.row className=Styles.gridRow>
+          </Grid.Row>
+          <Grid.Row className=Styles.gridRow>
             {React.array(
                repeatElement(6, i =>
-                 <Grid.cell span=2 key={string_of_int(i)}>
+                 <Grid.Cell span=2 key={string_of_int(i)}>
                    <div className=Styles.gridCell> {React.string("2")} </div>
-                 </Grid.cell>
+                 </Grid.Cell>
                ),
              )}
-          </Grid.row>
+          </Grid.Row>
         </div>
         <div className=Styles.section>
-          <Text.header> {React.string("Inputs")} </Text.header>
+          <Text.Header> {React.string("Inputs")} </Text.Header>
           <FormExample />
         </div>
         <div className=Styles.section>
-          <Text.header> {React.string("ContextLayer")} </Text.header>
+          <Text.Header> {React.string("ContextLayer")} </Text.Header>
           <ContextLayerExample />
         </div>
         <div className=Styles.section>
-          <Text.header> {React.string("Tooltip")} </Text.header>
+          <Text.Header> {React.string("Tooltip")} </Text.Header>
           <Tooltip text="tooltip">
             {(~contextRef, ~onMouseEnter, ~onMouseLeave) =>
                <Button ref=contextRef onMouseEnter onMouseLeave>
@@ -96,34 +96,34 @@ let make = () => {
           </Tooltip>
         </div>
         <div className=Styles.section>
-          <Text.header> {React.string("Select")} </Text.header>
+          <Text.Header> {React.string("Select")} </Text.Header>
           <SelectExample />
         </div>
         <div className=Styles.section>
-          <Text.header> {React.string("Modal")} </Text.header>
+          <Text.Header> {React.string("Modal")} </Text.Header>
           <ModalExample />
         </div>
         <div className=Styles.section>
-          <Text.header> {React.string("Card")} </Text.header>
-          <Grid.row>
-            <Grid.cell span=6>
+          <Text.Header> {React.string("Card")} </Text.Header>
+          <Grid.Row>
+            <Grid.Cell span=6>
               <Card className=Styles.cardPink>
-                <Text.smallBodyBold>
+                <Text.SmallBodyBold>
                   {React.string("ReasonReact")}
-                </Text.smallBodyBold>
-                <Text.smallBody>
+                </Text.SmallBodyBold>
+                <Text.SmallBody>
                   {React.string(
                      "ReasonReact uses functions and React Hooks to compose the component of your application. Let's look at how a component is written and then break down some of the things happening.",
                    )}
-                </Text.smallBody>
+                </Text.SmallBody>
               </Card>
-            </Grid.cell>
-            <Grid.cell span=6>
+            </Grid.Cell>
+            <Grid.Cell span=6>
               <Card>
-                <Text.smallBodyBold>
+                <Text.SmallBodyBold>
                   {React.string("What & Why")}
-                </Text.smallBodyBold>
-                <Text.smallBody>
+                </Text.SmallBodyBold>
+                <Text.SmallBody>
                   {React.string(
                      "By leveraging the latter's great type system, expressive language features and smooth interoperability with JS, ReasonReact packs ReactJS' features into an API that is:",
                    )}
@@ -141,13 +141,13 @@ let make = () => {
                        )}
                     </li>
                   </ul>
-                </Text.smallBody>
+                </Text.SmallBody>
               </Card>
-            </Grid.cell>
-          </Grid.row>
+            </Grid.Cell>
+          </Grid.Row>
         </div>
         <div className=Styles.section>
-          <Text.header> {React.string("Badge")} </Text.header>
+          <Text.Header> {React.string("Badge")} </Text.Header>
           <div>
             <Badge className=Styles.badge> {React.string("8")} </Badge>
             <Badge className=Styles.badge> {React.string("24")} </Badge>
@@ -156,7 +156,7 @@ let make = () => {
         </div>
       </div>
       <Modals />
-      <Layer.container />
+      <Layer.Container />
     </div>
-  </Layer.provider>;
+  </Layer.Provider>;
 };

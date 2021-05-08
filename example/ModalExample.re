@@ -5,8 +5,8 @@ let make = () => {
   let renderModal =
     React.useCallback1(
       () =>
-        <Modal.root>
-          <Text.body> {React.string("Modal")} </Text.body>
+        <Modal.Root>
+          <Text.Body> {React.string("Modal")} </Text.Body>
           <div>
             <Button onClick={_ => setCount(count => count + 1)}>
               {React.string(string_of_int(count))}
@@ -15,7 +15,7 @@ let make = () => {
           <Button onClick={_ => setShowModal(_ => false)}>
             {React.string("Hide")}
           </Button>
-        </Modal.root>,
+        </Modal.Root>,
       [|count|],
     );
   let onCloseRequest = React.useCallback0(() => setShowModal(_ => false));

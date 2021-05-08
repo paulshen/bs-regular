@@ -23,10 +23,8 @@
   "bs-dependencies": [
     "reason-react",
     "bs-css",
+    "bs-css-emotion",
     "re-classnames",
     "bs-webapi"
-  ],
-  "ppx-flags": [
-  ],
-  "refmt": 3
+  ]
 }

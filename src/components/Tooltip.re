@@ -35,8 +35,7 @@ let make = (~text, ~position=?, ~children) => {
   </>;
 };
 
-[@react.component]
-let container = (~text, ~position=?, ~children, ~className=?) => {
+let container = (~text, ~position=?, ~children, ~className=?, ()) => {
   make(
     makeProps(
       ~text,

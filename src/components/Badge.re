@@ -12,7 +12,8 @@ module Styles = {
 
 [@react.component]
 let make = (~children, ~className=?) => {
-  <Text.smallBody className={Cn.make([Styles.badge, Cn.unpack(className)])}>
+  <Text.SmallBody
+    className={Cn.fromList([Styles.badge, Cn.take(className)])}>
     children
-  </Text.smallBody>;
+  </Text.SmallBody>;
 };

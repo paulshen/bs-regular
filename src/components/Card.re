@@ -10,7 +10,7 @@ module Styles = {
 
 [@react.component]
 let make = (~children, ~className=?) => {
-  <div className={Cn.make([Styles.card, Cn.unpack(className)])}>
+  <div className={Cn.fromList([Styles.card, Cn.take(className)])}>
     children
   </div>;
 };

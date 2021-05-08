@@ -21,17 +21,24 @@ type selectOption = {label: string};
 
 module SelectOption = {
   [@react.component]
-  let make = (~option, ~onClick, ~isSelected, ~isFocused, ~scrollToElement) => {
+  let make =
+      (
+        ~option: selectOption,
+        ~onClick,
+        ~isSelected,
+        ~isFocused,
+        ~scrollToElement: Dom.htmlElement => unit,
+      ) => {
     let domRef = React.useRef(Js.Nullable.null);
 
     React.useEffect1(
       () => {
         if (isFocused) {
           let element =
-            Belt.Option.getExn(
-              Js.Nullable.toOption(React.Ref.current(domRef)),
-            );
-          Webapi.Dom.(element->Element.unsafeAsHtmlElement |> scrollToElement);
+            Belt.Option.getExn(Js.Nullable.toOption(domRef.current));
+          Webapi.Dom.(
+            element |> Element.unsafeAsHtmlElement |> scrollToElement
+          );
         };
         None;
       },
@@ -41,10 +48,10 @@ module SelectOption = {
     <div
       onClick
       tabIndex=0
-      className={Cn.make([
+      className={Cn.fromList([
         Styles.option,
-        Cn.ifTrue(Styles.optionSelected, isSelected),
-        Cn.ifTrue(Styles.optionFocused, isFocused),
+        Cn.on(Styles.optionSelected, isSelected),
+        Cn.on(Styles.optionFocused, isFocused),
       ])}
       ref={ReactDOMRe.Ref.domRef(domRef)}>
       {React.string(option.label)}
@@ -54,7 +61,14 @@ module SelectOption = {
 
 module SelectOptions = {
   [@react.component]
-  let make = (~options, ~selectedOption, ~onSelect, ~onMouseDown, ~contextRef) => {
+  let make =
+      (
+        ~options: array(selectOption),
+        ~selectedOption,
+        ~onSelect,
+        ~onMouseDown,
+        ~contextRef: React.ref(Js.Nullable.t(Dom.element)),
+      ) => {
     let (focusedIndex, setFocusedIndex) =
       React.useState(() =>
         switch (selectedOption) {
@@ -71,10 +85,10 @@ module SelectOptions = {
     let keyFilterTimeoutRef = React.useRef(None);
 
     let clearKeyFilterTimeout = () => {
-      switch (React.Ref.current(keyFilterTimeoutRef)) {
+      switch (keyFilterTimeoutRef.current) {
       | Some(keyFilterTimeout) =>
         Js.Global.clearTimeout(keyFilterTimeout);
-        React.Ref.setCurrent(keyFilterTimeoutRef, None);
+        keyFilterTimeoutRef.current = None;
       | None => ()
       };
     };
@@ -95,13 +109,13 @@ module SelectOptions = {
       | key =>
         if (String.length(key) == 1) {
           open Char;
-          let lowercaseKey = code(lowercase(key.[0]));
+          let lowercaseKey = code(lowercase_ascii(key.[0]));
           if (lowercaseKey >= code('a') && lowercaseKey <= code('z')) {
             let keyFilterStr =
-              React.Ref.current(keyFilter) ++ String.lowercase(key);
+              keyFilter.current ++ String.lowercase_ascii(key);
             switch (
               Js.Array.findIndex(
-                option =>
+                (option: selectOption) =>
                   Js.String.startsWith(
                     keyFilterStr,
                     Js.String.toLowerCase(option.label),
@@ -113,20 +127,18 @@ module SelectOptions = {
             | firstMatchingOptionIndex =>
               setFocusedIndex(_ => firstMatchingOptionIndex)
             };
-            React.Ref.setCurrent(keyFilter, keyFilterStr);
+            keyFilter.current = keyFilterStr;
           };
-          React.Ref.setCurrent(
-            keyFilterTimeoutRef,
+          keyFilterTimeoutRef.current =
             Some(
               Js.Global.setTimeout(
                 () => {
-                  React.Ref.setCurrent(keyFilter, "");
-                  React.Ref.setCurrent(keyFilterTimeoutRef, None);
+                  keyFilter.current = "";
+                  keyFilterTimeoutRef.current = None;
                 },
                 300,
               ),
-            ),
-          );
+            );
         }
       };
     };
@@ -134,7 +146,7 @@ module SelectOptions = {
     let onSelectRef = React.useRef(onSelect);
     React.useEffect1(
       () => {
-        React.Ref.setCurrent(onSelectRef, onSelect);
+        onSelectRef.current = onSelect;
         None;
       },
       [|onSelect|],
@@ -142,7 +154,7 @@ module SelectOptions = {
     let contextRefRef = React.useRef(contextRef);
     React.useEffect1(
       () => {
-        React.Ref.setCurrent(contextRefRef, contextRef);
+        contextRefRef.current = contextRef;
         None;
       },
       [|contextRef|],
@@ -154,19 +166,13 @@ module SelectOptions = {
       let onClick = e => {
         let target = MouseEvent.target(e);
         let layerDiv =
-          Belt.Option.getExn(
-            Js.Nullable.toOption(React.Ref.current(layerRef)),
-          );
+          Belt.Option.getExn(Js.Nullable.toOption(layerRef.current));
         let contextElement =
-          Belt.Option.getExn(
-            Js.Nullable.toOption(
-              React.Ref.current(React.Ref.current(contextRefRef)),
-            ),
-          );
+          Belt.Option.getExn(Js.Nullable.toOption(contextRef.current));
         let targetElement = EventTarget.unsafeAsElement(target);
         if (!Element.contains(targetElement, layerDiv)
             && !Element.contains(targetElement, contextElement)) {
-          let onSelect = React.Ref.current(onSelectRef);
+          let onSelect = onSelectRef.current;
           onSelect(None);
         };
       };
@@ -182,32 +188,28 @@ module SelectOptions = {
     let scrollToElement =
       React.useCallback0(optionElement => {
         let layerDiv =
-          Belt.Option.getExn(
-            Js.Nullable.toOption(React.Ref.current(layerRef)),
-          );
+          Belt.Option.getExn(Js.Nullable.toOption(layerRef.current));
         open Webapi.Dom;
         open Webapi.Dom.HtmlElement;
-        let layerDiv = layerDiv->Element.unsafeAsHtmlElement;
-        let layerTop = int_of_float(layerDiv->scrollTop);
-        let layerHeight = layerDiv->offsetHeight;
+        let layerDiv = layerDiv |> Element.unsafeAsHtmlElement;
+        let layerTop = int_of_float(layerDiv |> scrollTop);
+        let layerHeight = layerDiv |> offsetHeight;
         let layerBottom = layerTop + layerHeight;
 
-        let optionTop = optionElement->offsetTop;
-        let optionBottom = optionTop + optionElement->offsetHeight;
+        let optionTop = optionElement |> offsetTop;
+        let optionBottom = optionTop + offsetHeight(optionElement);
 
         if (optionTop < layerTop) {
-          layerDiv->setScrollTop(float_of_int(optionTop));
+          setScrollTop(layerDiv, float_of_int(optionTop));
         } else if (optionBottom > layerBottom) {
-          layerDiv->setScrollTop(float_of_int(optionBottom - layerHeight));
+          setScrollTop(layerDiv, float_of_int(optionBottom - layerHeight));
         };
       });
 
     <ContextLayer position=ContextLayer.Bottom contextRef onKeyPress>
       {(~position as _) => {
          let inputElement =
-           Belt.Option.getExn(
-             Js.Nullable.toOption(React.Ref.current(contextRef)),
-           );
+           Belt.Option.getExn(Js.Nullable.toOption(contextRef.current));
          let style =
            ReactDOMRe.Style.make(
              ~width=
@@ -246,12 +248,13 @@ module SelectOptions = {
     </ContextLayer>;
   };
 };
+// type selectOption = SelectOptionType.selectOption;
 
 [@react.component]
 let make =
     (
       ~getOptions,
-      ~selectedOption,
+      ~selectedOption: option(selectOption),
       ~onChange=?,
       ~label=?,
       ~placeholder=?,
@@ -277,8 +280,8 @@ let make =
   let hasSelectedOption = Belt.Option.isNone(selectedOption);
   let onInputChange =
     React.useCallback3(
-      e => {
-        let value: string = ReactEvent.Form.currentTarget(e)##value;
+      (e: ReactEvent.Form.t) => {
+        let value: string = e |> ReactEvent.Form.target(e)##value;
         setTextValue(_ => value);
         setShowOptions(_ => true);
         if (!forceOption && hasSelectedOption) {
@@ -294,8 +297,7 @@ let make =
   let onBlur =
     React.useCallback1(
       _ =>
-        React.Ref.setCurrent(
-          blurTimeout,
+        blurTimeout.current =
           Some(
             Js.Global.setTimeout(
               () => {
@@ -309,14 +311,13 @@ let make =
               100,
             ),
           ),
-        ),
       [|selectedOption|],
     );
   let onFocus = _ => {
-    switch (React.Ref.current(blurTimeout)) {
+    switch (blurTimeout.current) {
     | Some(timeout) =>
       Js.Global.clearTimeout(timeout);
-      React.Ref.setCurrent(blurTimeout, None);
+      blurTimeout.current = None;
     | None => ()
     };
     setShowOptions(_ => true);
@@ -364,7 +365,7 @@ let make =
            ?placeholder
            ref=inputRef
          />
-       : <TextInput.static
+       : <TextInput.Static
            ?label
            tabIndex=0
            onClick={_ => setShowOptions(_ => true)}
@@ -373,7 +374,7 @@ let make =
             | Some(selectedOption) => React.string(selectedOption.label)
             | None => React.null
             }}
-         </TextInput.static>}
+         </TextInput.Static>}
     {showOptions
        ? {
          Array.length(options) > 0
