@@ -36,7 +36,7 @@ let make = (~children, ~onKeyPress=?, ()) => {
     layers := Js.Array.concat([|layer|], layers^);
     Some(() => layers := Js.Array.filter(l => l !== layer, layers^));
   });
-  ReactDOMRe.createPortal(children, layerContainer);
+  ReactDOM.createPortal(children, layerContainer);
 };
 
 module Provider = {
@@ -71,6 +71,6 @@ module Container = {
       window |> Window.addKeyDownEventListener(onKeyPress);
       Some(() => Window.removeKeyDownEventListener(onKeyPress) |> ignore);
     });
-    <div ref={ReactDOMRe.Ref.domRef(domRef)} className=Styles.container />;
+    <div ref={ReactDOM.Ref.domRef(domRef)} className=Styles.container />;
   };
 };

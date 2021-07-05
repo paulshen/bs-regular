@@ -26,7 +26,7 @@ let make = (~text, ~position=?, ~children) => {
   let onMouseLeave = React.useCallback0(_ => setShowTooltip(_ => false));
   <>
     {children(
-       ~contextRef=ReactDOMRe.Ref.domRef(contextRef),
+       ~contextRef=ReactDOM.Ref.domRef(contextRef),
        ~onMouseEnter,
        ~onMouseLeave,
      )}

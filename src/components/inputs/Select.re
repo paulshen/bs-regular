@@ -53,7 +53,7 @@ module SelectOption = {
         Cn.on(Styles.optionSelected, isSelected),
         Cn.on(Styles.optionFocused, isFocused),
       ])}
-      ref={ReactDOMRe.Ref.domRef(domRef)}>
+      ref={ReactDOM.Ref.domRef(domRef)}>
       {React.string(option.label)}
     </div>;
   };
@@ -211,7 +211,7 @@ module SelectOptions = {
          let inputElement =
            Belt.Option.getExn(Js.Nullable.toOption(contextRef.current));
          let style =
-           ReactDOMRe.Style.make(
+           ReactDOM.Style.make(
              ~width=
                string_of_int(Webapi.Dom.Element.clientWidth(inputElement))
                ++ "px",
@@ -221,7 +221,7 @@ module SelectOptions = {
            className=Styles.optionsLayer
            onMouseDown
            style
-           ref={ReactDOMRe.Ref.domRef(layerRef)}>
+           ref={ReactDOM.Ref.domRef(layerRef)}>
            {React.array(
               Js.Array.mapi(
                 (option, i) => {

@@ -27,7 +27,7 @@ module Row = {
       | 0 => None
       | gutter =>
         Some(
-          ReactDOMRe.Style.make(
+          ReactDOM.Style.make(
             ~marginLeft=string_of_int(- gutter) ++ "px",
             ~marginRight=string_of_int(- gutter) ++ "px",
             (),
@@ -50,7 +50,7 @@ module Cell = {
   let make = (~span, ~className=?, ~children) => {
     let {span: contextSpan, gutter} = React.useContext(context);
     let style =
-      ReactDOMRe.Style.make(
+      ReactDOM.Style.make(
         ~width=
           Js.Float.toString(
             float_of_int(span) /. float_of_int(contextSpan) *. 100.,
@@ -60,9 +60,9 @@ module Cell = {
       );
     let style =
       if (gutter != 0) {
-        ReactDOMRe.Style.combine(
+        ReactDOM.Style.combine(
           style,
-          ReactDOMRe.Style.make(
+          ReactDOM.Style.make(
             ~paddingLeft=string_of_int(gutter) ++ "px",
             ~paddingRight=string_of_int(gutter) ++ "px",
             (),

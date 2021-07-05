@@ -53,7 +53,7 @@ let make =
         ref=?{
           Belt.Option.map(
             Js.Nullable.toOption(forwardedRef),
-            ReactDOMRe.Ref.domRef,
+            ReactDOM.Ref.domRef,
           )
         }
       />;
@@ -86,7 +86,7 @@ module Static = {
           ref=?{
             Belt.Option.map(
               Js.Nullable.toOption(forwardedRef),
-              ReactDOMRe.Ref.domRef,
+              ReactDOM.Ref.domRef,
             )
           }>
           children

@@ -70,7 +70,7 @@ let make =
       | BottomLeft(y, x)
       | TopLeft(y, x)
       | TopRight(y, x) =>
-        ReactDOMRe.Style.make(
+        ReactDOM.Style.make(
           ~top=Js.Float.toString(y) ++ "px",
           ~left=Js.Float.toString(x) ++ "px",
           (),
@@ -80,13 +80,13 @@ let make =
     Belt.Option.map(
       anchor,
       fun
-      | BottomLeft(_, _) => ReactDOMRe.Style.make(~bottom="0", ~left="0", ())
-      | TopLeft(_, _) => ReactDOMRe.Style.make(~top="0", ~left="0", ())
-      | TopRight(_, _) => ReactDOMRe.Style.make(~top="0", ~right="0", ()),
+      | BottomLeft(_, _) => ReactDOM.Style.make(~bottom="0", ~left="0", ())
+      | TopLeft(_, _) => ReactDOM.Style.make(~top="0", ~left="0", ())
+      | TopRight(_, _) => ReactDOM.Style.make(~top="0", ~right="0", ()),
     );
   <Layer ?onKeyPress>
     <div
-      ref={ReactDOMRe.Ref.domRef(divRef)}
+      ref={ReactDOM.Ref.domRef(divRef)}
       className=Styles.layer
       style=?outerStyle>
       <div className=Styles.layer style=?innerStyle>

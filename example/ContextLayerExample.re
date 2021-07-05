@@ -12,7 +12,7 @@ let make = () => {
     None;
   });
   <>
-    <div ref={ReactDOMRe.Ref.domRef(divRef)}>
+    <div ref={ReactDOM.Ref.domRef(divRef)}>
       {React.string("Context")}
     </div>
     {showLayer
